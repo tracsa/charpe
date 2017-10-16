@@ -1,5 +1,8 @@
 from . import Handler
+import logging
 
 
 class LogHandler(Handler):
-    pass
+
+    def publish(self, message):
+        logging.debug('Wil write message to log')

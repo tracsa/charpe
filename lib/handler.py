@@ -1,14 +1,11 @@
 from .logger import log
 from .handlers.log_handler import LogHandler
 
-handlers = {
-    'log': LogHandler(),
-}
 
-def handler(data):
-    if data['type'] != 'pmessage':
-        return
+class Handler:
 
-    channel, msg = data['channel'].decode('utf8'), data['data'].decode('utf8')
+    def __init__(self, config):
+        self.log = LogHandler(config.copy())
 
-    handlers['log'].publish(msg)
+    def __call__(self, data):
+        self.log.publish(data)

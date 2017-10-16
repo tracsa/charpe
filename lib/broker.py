@@ -1,5 +1,5 @@
 from .logger import log
-from .handler import handler
+from .handler import Handler
 from multiprocessing import Pool
 import redis
 import time
@@ -15,7 +15,7 @@ def end_task(res):
     pass
 
 def task_failed(error):
-    log.warning('Failed task with error: "{} {}"'.format(type(error).__name__, error))
+    log.warning('{} {}'.format(type(error).__name__, error))
 
 
 class Broker:
@@ -28,6 +28,7 @@ class Broker:
         )
         self.pool = Pool(config.WORKERS, init_worker)
         self.config = config
+        self.handler = Handler(config)
 
         log.info('Initialized broker')
 
@@ -44,7 +45,7 @@ class Broker:
                     message = ps.get_message()
 
                     if message:
-                        pool.apply_async(handler,
+                        pool.apply_async(self.handler,
                             args           = [message],
                             callback       = end_task,
                             error_callback = task_failed,
