@@ -1,5 +1,7 @@
 from lib.logger import log
 from lib.broker import Broker
+from lib.config import Config
+import os
 
 if __name__ == '__main__':
     # Logging stuff
@@ -11,6 +13,11 @@ if __name__ == '__main__':
     )
     log.debug('de')
 
-    # run the broker class
-    brok = Broker()
+    # Load the config
+    config = Config(os.path.dirname(os.path.realpath(__file__)))
+    config.from_pyfile('settings.py')
+    config.from_envvar('BROKER_SETTINGS', silent=True)
+
+    # Run the broker class
+    brok = Broker(config)
     brok.run()

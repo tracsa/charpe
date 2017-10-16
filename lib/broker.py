@@ -20,9 +20,14 @@ def task_failed(error):
 
 class Broker:
 
-    def __init__(self):
-        self.redis = redis.StrictRedis() # TODO read connections settings
-        self.pool = Pool(4, init_worker) # TODO make this a setting
+    def __init__(self, config):
+        self.redis = redis.StrictRedis(
+            host = config.REDIS_HOST,
+            port = config.REDIS_PORT,
+            db = config.REDIS_DB,
+        )
+        self.pool = Pool(config.WORKERS, init_worker)
+        self.config = config
 
         log.info('Initialized broker')
 
@@ -31,7 +36,7 @@ class Broker:
 
         ps = self.redis.pubsub()
 
-        ps.psubscribe('*') # TODO this might me a setting
+        ps.psubscribe(self.config.CHANNEL_PATTERN)
 
         with self.pool as pool:
             while True:
@@ -45,7 +50,7 @@ class Broker:
                             error_callback = task_failed,
                         )
 
-                    time.sleep(0.001) # TODO make this a config
+                    time.sleep(self.config.SLEEP_TIME)
                 except KeyboardInterrupt as e:
                     break
 
