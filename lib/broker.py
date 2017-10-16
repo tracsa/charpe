@@ -11,6 +11,12 @@ import signal
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
+def end_task(res):
+    pass
+
+def task_failed(error):
+    log.warning('Failed task with error: "{} {}"'.format(type(error).__name__, error))
+
 
 class Broker:
 
@@ -33,7 +39,11 @@ class Broker:
                     message = ps.get_message()
 
                     if message:
-                        pool.apply_async(handler, [message])
+                        pool.apply_async(handler,
+                            args           = [message],
+                            callback       = end_task,
+                            error_callback = task_failed,
+                        )
 
                     time.sleep(0.001) # TODO make this a config
                 except KeyboardInterrupt as e:
