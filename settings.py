@@ -10,5 +10,9 @@ SLEEP_TIME = 0.001
 # Channels
 CHANNEL_PATTERN = '*'
 
-# Log specific settings
-LOG_DATABASE_URI = 'postgresql://localhost:5432/fleety'
+# Postgres connection params
+POSTGRES_DB = 'fleety'
+POSTGRES_USER = None
+POSTGRES_PASSWORD = None
+POSTGRES_HOST = 'localhost'
+POSTGRES_PORT = 5432
