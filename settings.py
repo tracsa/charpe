@@ -9,3 +9,6 @@ SLEEP_TIME = 0.001
 
 # Channels
 CHANNEL_PATTERN = '*'
+
+# Log specific settings
+LOG_DATABASE_URI = 'postgresql://localhost:5432/fleety'

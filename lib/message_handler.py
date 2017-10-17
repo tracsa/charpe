@@ -2,7 +2,7 @@ from .logger import log
 from .handlers.log_handler import LogHandler
 
 
-class Handler:
+class MessageHandler:
 
     def __init__(self, config):
         self.log = LogHandler(config.copy())

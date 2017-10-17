@@ -1,5 +1,5 @@
 from .logger import log
-from .handler import Handler
+from .message_handler import MessageHandler
 from multiprocessing import Pool
 import redis
 import time
@@ -28,7 +28,7 @@ class Broker:
         )
         self.pool = Pool(config.WORKERS, init_worker)
         self.config = config
-        self.handler = Handler(config)
+        self.handler = MessageHandler(config)
 
         log.info('Initialized broker')
 
