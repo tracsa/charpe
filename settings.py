@@ -8,7 +8,7 @@ WORKERS = 4
 SLEEP_TIME = 0.001
 
 # Channels
-CHANNEL_PATTERN = '*'
+CHANNEL_PATTERN = '*:*:*'
 
 # Postgres connection params
 POSTGRES_DB = 'fleety'
