@@ -1,3 +1,5 @@
+import logging
+
 # Redis connection
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
@@ -16,3 +18,6 @@ POSTGRES_USER = None
 POSTGRES_PASSWORD = None
 POSTGRES_HOST = 'localhost'
 POSTGRES_PORT = 5432
+
+# Log configuration
+LOG_LEVEL = logging.INFO
