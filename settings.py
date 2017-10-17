@@ -21,3 +21,6 @@ POSTGRES_PORT = 5432
 
 # Log configuration
 LOG_LEVEL = logging.INFO
+
+# Time settings
+TIMEZONE = 'UTC'

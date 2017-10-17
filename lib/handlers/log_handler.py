@@ -2,6 +2,7 @@ from . import BaseHandler
 import logging
 import psycopg2
 import json
+from datetime import datetime
 
 
 class LogHandler(BaseHandler):
@@ -33,6 +34,7 @@ class LogHandler(BaseHandler):
         subdomain = channel.split(':')[0]
         event = data['event']
         data = json.dumps(data['data'])
+        created_at = datetime.now()
 
         conn = psycopg2.connect(
             dbname   = self.config['POSTGRES_DB'],
@@ -43,7 +45,7 @@ class LogHandler(BaseHandler):
         )
         cur = conn.cursor()
 
-        cur.execute("INSERT INTO log (org_subdomain, channel, event, data) VALUES (%s, %s, %s, %s)", (subdomain, channel, event, data))
+        cur.execute("INSERT INTO log (org_subdomain, channel, event, data, created_at) VALUES (%s, %s, %s, %s, %s)", (subdomain, channel, event, data, created_at))
         conn.commit()
 
         cur.close()
