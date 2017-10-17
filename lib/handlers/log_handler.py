@@ -8,32 +8,10 @@ from datetime import datetime
 class LogHandler(BaseHandler):
 
     def publish(self, message):
-        if message['type'] != 'pmessage':
-            return
-
-        data = message['data']
-
-        try:
-            data = json.loads(data)
-        except json.decoder.JSONDecodeError as e:
-            logging.warning('Couldn\'t decode event\'s JSON data:')
-            logging.warning(message)
-            return
-
-        if 'event' not in data:
-            logging.warning('Received non-event message')
-            logging.warning(message)
-            return
-
-        if 'data' not in data:
-            logging.warning('Received event without data')
-            logging.warning(message)
-            return
-
-        channel = message['channel'].decode('utf8')
+        channel = message['channel']
         subdomain = channel.split(':')[0]
-        event = data['event']
-        data = json.dumps(data['data'])
+        event = message['data']['event']
+        data = json.dumps(message['data']['data'])
         created_at = datetime.now()
 
         conn = psycopg2.connect(
