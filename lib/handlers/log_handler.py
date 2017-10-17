@@ -11,7 +11,7 @@ class LogHandler(BaseHandler):
             return
 
         data = message['data']
-        
+
         try:
             data = json.loads(data)
         except json.decoder.JSONDecodeError as e:
@@ -29,10 +29,10 @@ class LogHandler(BaseHandler):
             logging.warning(message)
             return
 
-        channel = message['channel']
+        channel = message['channel'].decode('utf8')
         subdomain = channel.split(':')[0]
         event = data['event']
-        data = data['data']
+        data = json.dumps(data['data'])
 
         conn = psycopg2.connect(
             dbname   = self.config['POSTGRES_DB'],
