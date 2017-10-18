@@ -25,10 +25,12 @@ class MessageHandler:
 
         # we will now check for suscriptions and dispatch them with
         # the handlers
-        channel = event['channel'].decode('utf8')
+        channel  = event['channel'].decode('utf8')
         ch_parts = channel.split(':')
-        subscription_keys = self.get_redis().sinter(
-            ':'.join(ch_parts[0:i+1])
+        org      = ch_parts[0]
+
+        subscription_keys = self.get_redis().sunion(
+            org + ':subscription:tree_key_name:' + ':'.join(ch_parts[0:i+1])
             for i in range(len(ch_parts))
         )
 
