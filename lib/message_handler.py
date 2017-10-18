@@ -1,10 +1,11 @@
 from .logger import log
-from .handlers.log_handler import LogHandler
 import json
 import redis
+from importlib import import_module
 
-# These variables are global to the process
+# These variables are global to the forked process
 red_client = None
+handlers = dict()
 
 
 class MessageHandler:
@@ -12,7 +13,6 @@ class MessageHandler:
     # this function runs in a different process...
     def __init__(self, config):
         self.config = config.copy()
-        self.log = LogHandler(self.config)
 
     # ...than this one, so no conexion can be shared between the two
     def __call__(self, event):
@@ -21,7 +21,7 @@ class MessageHandler:
         if parsed_event is None:
             return
 
-        self.log.publish(parsed_event)
+        self.get_handler('Log').publish(parsed_event)
 
         # we will now check for suscriptions and dispatch them with
         # the handlers
@@ -34,6 +34,15 @@ class MessageHandler:
 
         for sub_id in subscription_keys:
             print(sub_id)
+
+    def get_handler(self, name):
+        global handlers
+
+        if name not in handlers:
+            module = import_module('.handlers.{}_handler'.format(name.lower()), 'lib')
+            handlers[name] = getattr(module, name+'Handler')(self.config)
+
+        return handlers[name]
 
     def parse_event(self, event):
         if event['type'] != 'pmessage':
@@ -68,10 +77,7 @@ class MessageHandler:
         global red_client
 
         if red_client is not None:
-            log.debug('Returning recycled redis')
             return red_client
-
-        log.debug('Creating new redis')
 
         red_client = redis.StrictRedis(
             host = self.config['REDIS_HOST'],
