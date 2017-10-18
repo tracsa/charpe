@@ -1,13 +1,18 @@
 from .logger import log
 from .handlers.log_handler import LogHandler
 import json
+import redis
+
+# These variables are global to the process
+red_client = None
 
 
 class MessageHandler:
 
     # this function runs in a different process...
     def __init__(self, config):
-        self.log = LogHandler(config.copy())
+        self.config = config.copy()
+        self.log = LogHandler(self.config)
 
     # ...than this one, so no conexion can be shared between the two
     def __call__(self, event):
@@ -22,8 +27,12 @@ class MessageHandler:
         # the handlers
         channel = event['channel'].decode('utf8')
         ch_parts = channel.split(':')
+        subscription_keys = self.get_redis().sinter(
+            ':'.join(ch_parts[0:i+1])
+            for i in range(len(ch_parts))
+        )
 
-        for sub_id in self.redis.sinter(':'.join(ch_parts[0:i+1]) for i in range(len(ch_parts))):
+        for sub_id in subscription_keys:
             print(sub_id)
 
     def parse_event(self, event):
@@ -54,3 +63,20 @@ class MessageHandler:
             'data': data,
             'channel': event['channel'].decode('utf8'),
         }
+
+    def get_redis(self):
+        global red_client
+
+        if red_client is not None:
+            log.debug('Returning recycled redis')
+            return red_client
+
+        log.debug('Creating new redis')
+
+        red_client = redis.StrictRedis(
+            host = self.config['REDIS_HOST'],
+            port = self.config['REDIS_PORT'],
+            db = self.config['REDIS_DB'],
+        )
+
+        return red_client
