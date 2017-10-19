@@ -1,1 +1,2 @@
 redis==2.10.6
+coralillo==0.6.8

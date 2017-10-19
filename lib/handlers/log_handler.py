@@ -19,8 +19,8 @@ class LogHandler(BaseHandler):
     def publish(self, message):
         channel = message['channel']
         subdomain = channel.split(':')[0]
-        event = message['data']['event']
-        data = json.dumps(message['data']['data'])
+        event = message['event']
+        data = json.dumps(message['data'])
         created_at = datetime.now()
 
         cur = self.postgres.cursor()

@@ -1,11 +1,8 @@
 from .logger import log
 import json
-import redis
 from importlib import import_module
-
-# These variables are global to the forked process
-red_client = None
-handlers = dict()
+from .models import Subscription
+from coralillo import Engine
 
 
 class MessageHandler:
@@ -13,6 +10,8 @@ class MessageHandler:
     # this function runs in a different process...
     def __init__(self, config):
         self.config = config.copy()
+        self.engine = None
+        self.handlers = dict()
 
     # ...than this one, so no conexion can be shared between the two
     def __call__(self, event):
@@ -23,28 +22,29 @@ class MessageHandler:
 
         self.get_handler('Log').publish(parsed_event)
 
+        for sub in self.get_subscribers(parsed_event):
+            self.get_handler(sub.handler).publish(parsed_event)
+
+    def get_subscribers(self, event):
         # we will now check for suscriptions and dispatch them with
         # the handlers
-        channel  = event['channel'].decode('utf8')
-        ch_parts = channel.split(':')
-        org      = ch_parts[0]
+        channel  = event['channel']
 
-        subscription_keys = self.get_redis().sunion(
-            org + ':subscription:tree_key_name:' + ':'.join(ch_parts[0:i+1])
-            for i in range(len(ch_parts))
-        )
+        # We need to bind the models to the engine and add prefix function
+        self.bind_models(event['org'])
 
-        for sub_id in subscription_keys:
-            print(sub_id)
+        def filter_events(sub):
+            return sub.event == '*' or sub.event == event['event']
+
+        return filter(filter_events, Subscription.tree_match('channel', channel))
+
 
     def get_handler(self, name):
-        global handlers
-
-        if name not in handlers:
+        if name not in self.handlers:
             module = import_module('.handlers.{}_handler'.format(name.lower()), 'lib')
-            handlers[name] = getattr(module, name+'Handler')(self.config)
+            self.handlers[name] = getattr(module, name+'Handler')(self.config)
 
-        return handlers[name]
+        return self.handlers[name]
 
     def parse_event(self, event):
         if event['type'] != 'pmessage':
@@ -70,21 +70,27 @@ class MessageHandler:
             log.warning(event)
             return
 
+        channel = event['channel'].decode('utf8')
+
         return {
-            'data': data,
-            'channel': event['channel'].decode('utf8'),
+            'data': data['data'],
+            'event': data['event'],
+            'channel': channel,
+            'org': channel.split(':')[0],
         }
 
-    def get_redis(self):
-        global red_client
+    def bind_models(self, org):
+        ''' bind the models to an engine, and set the prefix function '''
+        if self.engine is None:
+            self.engine = Engine(
+                host = self.config['REDIS_HOST'],
+                port = self.config['REDIS_PORT'],
+                db = self.config['REDIS_DB'],
+            )
 
-        if red_client is not None:
-            return red_client
+            Subscription.set_engine(self.engine)
 
-        red_client = redis.StrictRedis(
-            host = self.config['REDIS_HOST'],
-            port = self.config['REDIS_PORT'],
-            db = self.config['REDIS_DB'],
-        )
+        def prefix(cls):
+            return org
 
-        return red_client
+        Subscription.prefix = classmethod(prefix)
