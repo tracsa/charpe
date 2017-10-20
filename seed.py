@@ -26,7 +26,7 @@ if __name__ == '__main__':
     s1 = Subscription(
         channel = 'testing:class:theid',
         event = 'an-event',
-        handler = 'email',
+        handler = 'Email',
         params = {
             'a': '1',
         },

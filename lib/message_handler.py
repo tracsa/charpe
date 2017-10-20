@@ -36,8 +36,22 @@ class MessageHandler:
         def filter_events(sub):
             return sub.event == '*' or sub.event == event['event']
 
-        return filter(filter_events, Subscription.tree_match('channel', channel))
+        subs = {}
 
+        for sub in filter(filter_events, Subscription.tree_match('channel', channel)):
+            if sub.handler not in subs:
+                subs[sub.handler] = {
+                    'channel': channel,
+                    'event': event['event'],
+                    'users': [sub.proxy.user.get().to_json()],
+                    'handler': sub.handler,
+                    'params': [sub.params],
+                }
+            else:
+                subs[sub.handler]['users'].append(sub.proxy.user.get().to_json())
+                subs[sub.handler]['params'].append(sub.params)
+
+        return subs.values()
 
     def get_handler(self, name):
         if name not in self.handlers:

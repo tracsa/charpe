@@ -24,3 +24,12 @@ LOG_LEVEL = logging.INFO
 
 # Time settings
 TIMEZONE = 'UTC'
+
+# Needed to send mails
+MAIL_SERVER             = 'smtp.mailgun.org'
+MAIL_PORT               = '587'
+MAIL_USE_TLS            = True
+MAIL_USE_SSL            = False
+MAIL_USERNAME           = 'devel@mg.getfleety.com'
+MAIL_PASSWORD           = ''
+MAIL_DEFAULT_SENDER     = '"Fleety Devel" <devel@mg.getfleety.com>'
