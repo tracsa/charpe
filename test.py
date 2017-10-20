@@ -28,7 +28,9 @@ class BrokerTestCase(unittest.TestCase):
         self.maxDiff = None
 
     def test_can_subscribe_to_all_events_of_channel(self):
-        s1 = Subscription(channel='a:b:c', event='*').save()
+        u1 = User().save()
+        s1 = Subscription(channel='a:b:c', event='*', handler='Email').save()
+        s1.proxy.user.set(u1)
 
         mh = MessageHandler(self.config)
 
@@ -36,53 +38,101 @@ class BrokerTestCase(unittest.TestCase):
         e2 = { 'event': 'var', 'channel': 'a:b:c', 'org': 'testing' }
         e3 = { 'event': 'var', 'channel': 'a:b:d', 'org': 'testing' }
 
-        self.assertEqual(list(mh.get_subscribers(e1)), [s1])
-        self.assertEqual(list(mh.get_subscribers(e2)), [s1])
+        out1 = {
+            'channel': 'a:b:c',
+            'event': 'foo',
+            'handler': 'Email',
+            'params': [{}],
+            'users': [u1.to_json()],
+        }
+        out2 = {
+            'channel': 'a:b:c',
+            'event': 'var',
+            'handler': 'Email',
+            'params': [{}],
+            'users': [u1.to_json()],
+        }
+
+        self.assertEqual(list(mh.get_subscribers(e1)), [out1])
+        self.assertEqual(list(mh.get_subscribers(e2)), [out2])
         self.assertEqual(list(mh.get_subscribers(e3)), [])
 
     def test_subscription_respects_events(self):
-        s1 = Subscription(channel='a:b:c', event='d').save()
-        s2 = Subscription(channel='a:b:c', event='e').save()
+        u1 = User().save()
+        s1 = Subscription(channel='a:b:c', event='d', handler='Email').save()
+        s1.proxy.user.set(u1)
+        u2 = User().save()
+        s2 = Subscription(channel='a:b:c', event='e', handler='Email').save()
+        s2.proxy.user.set(u2)
 
         e1 = { 'event': 'd', 'channel': 'a:b:c', 'org': 'testing' }
         e2 = { 'event': 'e', 'channel': 'a:b:c', 'org': 'testing' }
 
         mh = MessageHandler(self.config)
 
-        self.assertEqual(list(mh.get_subscribers(e1)), [s1])
-        self.assertEqual(list(mh.get_subscribers(e2)), [s2])
+        o1 = {
+            'event': 'd',
+            'channel': 'a:b:c',
+            'handler': 'Email',
+            'users': [u1.to_json()],
+            'params': [{}],
+        }
+        o2 = {
+            'event': 'e',
+            'channel': 'a:b:c',
+            'handler': 'Email',
+            'users': [u2.to_json()],
+            'params': [{}],
+        }
+
+        self.assertEqual(list(mh.get_subscribers(e1)), [o1])
+        self.assertEqual(list(mh.get_subscribers(e2)), [o2])
 
     def test_subscription_respects_channel_hierarchy(self):
-        s1 = Subscription(channel='a', event='z').save()
-        s2 = Subscription(channel='a:b', event='z').save()
-        s3 = Subscription(channel='a:b:c', event='z').save()
+        u1 = User().save()
+        u2 = User().save()
+        u3 = User().save()
+
+        s1 = Subscription(channel='a', event='z', handler='Email').save()
+        s1.proxy.user.set(u1)
+        s2 = Subscription(channel='a:b', event='z', handler='Email').save()
+        s2.proxy.user.set(u2)
+        s3 = Subscription(channel='a:b:c', event='z', handler='Email').save()
+        s3.proxy.user.set(u3)
 
         e1 = { 'event': 'z', 'channel': 'a:b:c', 'org': 'testing' }
         e2 = { 'event': 'z', 'channel': 'a:b:d', 'org': 'testing' }
         e3 = { 'event': 'z', 'channel': 'a:e:f', 'org': 'testing' }
 
+        o1 = { 'channel': 'a:b:c', 'event': 'z', 'handler': 'Email', 'params': [{}, {}, {}], 'users': [u1.to_json(), u2.to_json(), u3.to_json()] }
+        o2 = { 'channel': 'a:b:d', 'event': 'z', 'handler': 'Email', 'params': [{}, {}], 'users': [u1.to_json(), u2.to_json()] }
+        o3 = { 'channel': 'a:e:f', 'event': 'z', 'handler': 'Email', 'params': [{}], 'users': [u1.to_json()] }
+
         mh = MessageHandler(self.config)
 
-        self.assertEqual(list(mh.get_subscribers(e1)), [s1, s2, s3])
-        self.assertEqual(list(mh.get_subscribers(e2)), [s1, s2])
-        self.assertEqual(list(mh.get_subscribers(e3)), [s1])
+        self.assertEqual(list(mh.get_subscribers(e1)), [o1])
+        self.assertEqual(list(mh.get_subscribers(e2)), [o2])
+        self.assertEqual(list(mh.get_subscribers(e3)), [o3])
 
     def test_send_email(self):
+        u1 = User(name='John', last_name='Doe', email='john@testing.com').save()
+
         eh = EmailHandler(self.config)
 
         with eh.mail.record_messages() as outbox:
             eh.publish({
-                'data'    : {'a': 'b'},
-                'event'   : 'demo-event',
-                'channel' : 'a:b:c',
-                'org'     : 'a',
+                'channel': 'a:b:c',
+                'event': 'demo-event',
+                'users': [u1.to_json()],
+                'handler': 'Email',
+                'params': [{'a': '1'}],
             })
 
             self.assertEqual(len(outbox), 1)
 
             msg = outbox[0]
             self.assertEqual(msg.subject, 'Evento demo')
-            self.assertEqual(msg.bcc, ['El que recibe'])
+            self.assertEqual(msg.bcc, ['{} {} <{}>'.format(u1.name, u1.last_name, u1.email)])
 
     def test_group_subscriptions(self):
         u1 = User().save()

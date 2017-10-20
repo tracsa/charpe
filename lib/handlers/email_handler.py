@@ -20,9 +20,19 @@ class EmailHandler(BaseHandler):
         return template.render(**kwargs)
 
     def publish(self, message):
+        def build_recipient(user):
+            return '{} {} <{}>'.format(
+                user['name'],
+                user['last_name'] if user['last_name'] else '',
+                user['email'],
+            )
+
         msg = mail.Message(
             subject = _.get(message['event'], ''),
-            bcc = 'receiver',
+            bcc = list(map(
+                build_recipient,
+                message['users']
+            ))
         )
 
         msg.html = self.render_template('{}.html'.format(message['event']),
