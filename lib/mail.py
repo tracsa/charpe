@@ -38,15 +38,10 @@ def force_text(s, encoding='utf-8', errors='strict'):
 
     try:
         if not isinstance(s, str):
-            if PY3:
-                if isinstance(s, bytes):
-                    s = str(s, encoding, errors)
-                else:
-                    s = str(s)
-            elif hasattr(s, '__unicode__'):
-                s = s.__unicode__()
+            if isinstance(s, bytes):
+                s = str(s, encoding, errors)
             else:
-                s = str(bytes(s), encoding, errors)
+                s = str(s)
         else:
             s = s.decode(encoding, errors)
     except UnicodeDecodeError as e:
@@ -155,7 +150,7 @@ class Connection:
         if self.host:
             self.host.sendmail(sanitize_address(envelope_from or message.sender),
                                list(sanitize_addresses(message.send_to)),
-                               message.as_bytes() if PY3 else message.as_string(),
+                               message.as_bytes(),
                                message.mail_options,
                                message.rcpt_options)
 
@@ -284,7 +279,6 @@ class Message(object):
 
     def _message(self):
         """Creates the email"""
-        ascii_attachments = current_app.extensions['mail'].ascii_attachments
         encoding = self.charset or 'utf-8'
 
         attachments = self.attachments or []
@@ -332,7 +326,8 @@ class Message(object):
             encode_base64(f)
 
             filename = attachment.filename
-            if filename and ascii_attachments:
+
+            if filename:
                 # force filename to ascii
                 filename = unicodedata.normalize('NFKD', filename)
                 filename = filename.encode('ascii', 'ignore').decode('ascii')
@@ -341,8 +336,6 @@ class Message(object):
             try:
                 filename and filename.encode('ascii')
             except UnicodeEncodeError:
-                if not PY3:
-                    filename = filename.encode('utf8')
                 filename = ('UTF8', '', filename)
 
             f.add_header('Content-Disposition',
@@ -361,10 +354,7 @@ class Message(object):
         return self._message().as_string()
 
     def as_bytes(self):
-        if PY34:
-            return self._message().as_bytes()
-        else: # fallback for old Python (3) versions
-            return self._message().as_string().encode(self.charset or 'utf-8')
+        return self._message().as_bytes()
 
     def __str__(self):
         return self.as_string()
@@ -434,17 +424,16 @@ class Message(object):
 class Mail:
 
     def __init__(self, config):
-        self.server            = config.get('MAIL_SERVER', '127.0.0.1'),
-        self.username          = config.get('MAIL_USERNAME'),
-        self.password          = config.get('MAIL_PASSWORD'),
-        self.port              = config.get('MAIL_PORT', 25),
-        self.use_tls           = config.get('MAIL_USE_TLS', False),
-        self.use_ssl           = config.get('MAIL_USE_SSL', False),
-        self.default_sender    = config.get('MAIL_DEFAULT_SENDER'),
-        self.debug             = int(config.get('MAIL_DEBUG', 0)),
-        self.max_emails        = config.get('MAIL_MAX_EMAILS'),
-        self.suppress          = config.get('MAIL_SUPPRESS_SEND', False),
-        self.ascii_attachments = config.get('MAIL_ASCII_ATTACHMENTS', False)
+        self.server            = config.get('MAIL_SERVER', '127.0.0.1')
+        self.username          = config.get('MAIL_USERNAME')
+        self.password          = config.get('MAIL_PASSWORD')
+        self.port              = config.get('MAIL_PORT', 25)
+        self.use_tls           = config.get('MAIL_USE_TLS', False)
+        self.use_ssl           = config.get('MAIL_USE_SSL', False)
+        self.default_sender    = config.get('MAIL_DEFAULT_SENDER')
+        self.debug             = int(config.get('MAIL_DEBUG', 0))
+        self.max_emails        = config.get('MAIL_MAX_EMAILS')
+        self.suppress          = config.get('MAIL_SUPPRESS_SEND', False)
 
     @contextmanager
     def record_messages(self):

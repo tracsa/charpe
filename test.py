@@ -13,11 +13,14 @@ class BrokerTestCase(unittest.TestCase):
     def setUp(self):
         self.config = Config(os.path.dirname(os.path.realpath(__file__)))
         self.config.from_pyfile('settings.py')
+        self.config.from_pyfile('settings_testing.py')
 
         def prefix(cls):
             return 'testing'
 
-        self.eng = Engine()
+        self.eng = Engine(
+            db = self.config['REDIS_DB'],
+        )
 
         Subscription.prefix = classmethod(prefix)
         Subscription.set_engine(self.eng)
