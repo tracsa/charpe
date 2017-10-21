@@ -7,7 +7,7 @@ import os
 if __name__ == '__main__':
     config = Config(os.path.dirname(os.path.realpath(__file__)))
     config.from_pyfile('settings.py')
-    config.from_pyfile('settings_testing.py')
+    config.from_pyfile('settings_devel.py')
 
     engine = Engine(
         host = config['REDIS_HOST'],
