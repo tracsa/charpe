@@ -1,5 +1,5 @@
 import unittest
-from lib.models import Subscription
+from lib.models import Subscription, User
 from coralillo import Engine
 from lib.config import Config
 import os
@@ -21,13 +21,20 @@ if __name__ == '__main__':
         return 'testing'
 
     Subscription.set_engine(engine)
+    User.set_engine(engine)
     Subscription.prefix = classmethod(prefix)
 
+    u1 = User(
+        name      = 'Test',
+        last_name = 'User',
+        email     = 'categulario@mailinator.com',
+    ).save()
     s1 = Subscription(
         channel = 'testing:class:theid',
-        event = 'an-event',
+        event   = 'demo-event',
         handler = 'Email',
-        params = {
+        params  = {
             'a': '1',
         },
     ).save()
+    s1.proxy.user.set(u1)

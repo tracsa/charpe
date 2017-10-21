@@ -3,6 +3,7 @@ from .. import mail
 from ..i18n import _
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import os
+import logging
 
 
 class EmailHandler(BaseHandler):
@@ -14,8 +15,8 @@ class EmailHandler(BaseHandler):
         )
         self.mail = mail.Mail(self.config)
 
-    def render_template(self, template, **kwargs):
-        template = self.jinja.get_template(template)
+    def render_template(self, name, **kwargs):
+        template = self.jinja.select_template([name])
 
         return template.render(**kwargs)
 
@@ -27,12 +28,14 @@ class EmailHandler(BaseHandler):
                 user['email'],
             )
 
+        recipients = list(map(
+            build_recipient,
+            message['users']
+        ))
+
         msg = mail.Message(
             subject = _.get(message['event'], ''),
-            bcc = list(map(
-                build_recipient,
-                message['users']
-            ))
+            bcc = recipients,
         )
 
         msg.html = self.render_template('{}.html'.format(message['event']),
@@ -46,3 +49,5 @@ class EmailHandler(BaseHandler):
         )
 
         self.mail.send(msg)
+
+        logging.debug('Email sent')

@@ -1,7 +1,7 @@
 from .logger import log
 import json
 from importlib import import_module
-from .models import Subscription
+from .models import Subscription, User
 from coralillo import Engine
 
 
@@ -23,7 +23,7 @@ class MessageHandler:
         self.get_handler('Log').publish(parsed_event)
 
         for sub in self.get_subscribers(parsed_event):
-            self.get_handler(sub.handler).publish(parsed_event)
+            self.get_handler(sub['handler']).publish(sub)
 
     def get_subscribers(self, event):
         # we will now check for suscriptions and dispatch them with
@@ -103,6 +103,7 @@ class MessageHandler:
             )
 
             Subscription.set_engine(self.engine)
+            User.set_engine(self.engine)
 
         def prefix(cls):
             return org
