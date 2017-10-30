@@ -1,7 +1,7 @@
 from . import BaseHandler
 import logging
 import psycopg2
-import json
+import simplejson as json
 from datetime import datetime
 
 
