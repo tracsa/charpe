@@ -1,5 +1,5 @@
 from .logger import log
-import json
+import simplejson as json
 from importlib import import_module
 from .models import Subscription, User
 from coralillo import Engine

@@ -5,7 +5,7 @@ from lib.message_handler import MessageHandler
 from lib.handlers.email_handler import EmailHandler
 from lib.config import Config
 import os
-import json
+import simplejson as json
 
 
 class BrokerTestCase(unittest.TestCase):
