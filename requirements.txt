@@ -2,3 +2,4 @@ redis==2.10.6
 coralillo==0.6.8
 blinker==1.4
 jinja2==2.9.6
+psycopg2==2.7.3.1
