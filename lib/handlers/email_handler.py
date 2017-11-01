@@ -18,7 +18,11 @@ class EmailHandler(BaseHandler):
         self.mail = mail.Mail(self.config)
 
     def render_template(self, name, **kwargs):
-        template = self.jinja.get_template('{}.html'.format(name))
+        template = self.jinja.get_template('{}.html'.format(name),
+            globals = {
+                'config': self.config,
+            },
+        )
 
         return template.render(**kwargs)
 
