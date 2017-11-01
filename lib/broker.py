@@ -11,12 +11,6 @@ import signal
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-def end_task(res):
-    pass
-
-def task_failed(error):
-    log.warning('{} {}'.format(type(error).__name__, error))
-
 
 class Broker:
 
@@ -47,8 +41,6 @@ class Broker:
                     if message:
                         pool.apply_async(self.handler,
                             args           = [message],
-                            callback       = end_task,
-                            error_callback = task_failed,
                         )
 
                     time.sleep(self.config.SLEEP_TIME)

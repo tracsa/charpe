@@ -15,6 +15,12 @@ class MessageHandler:
 
     # ...than this one, so no conexion can be shared between the two
     def __call__(self, event):
+        try:
+            self.call(event)
+        except Exception as error:
+            log.exception('{} {}'.format(type(error).__name__, error))
+
+    def call(self, event):
         parsed_event = self.parse_event(event)
 
         if parsed_event is None:
