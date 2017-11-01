@@ -40,12 +40,6 @@ class EmailHandler(BaseHandler):
 
         msg.html = self.render_template('{}.html'.format(message['event']),
             event          = _.get(message['event'], ''),
-            # org_name       = message['org'],
-            # static_map_url = static_map_url,
-            # device_name    = device_name,
-            # geofence_name  = geofence_name,
-            # device_href    = device_href,
-            # geofence_href  = geofence_href,
         )
 
         self.mail.send(msg)
