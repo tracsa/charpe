@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block body %}
 <tr>
     <td>
@@ -8,26 +9,16 @@
 <tr>
     <td class="container-padding content" align="left" style="color: #707c8d;padding: 40px 24px;background-color:#ffffff">
         <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550">
-            {{ device_name }}
-            {% if event == 'geofence-leave' %}
-                salió de
-            {% else %}
-                entró a
-            {% endif %}
-            {{ geofence_name }}
+            {{ device.name }}
+            entró a
+            {{ geofence.name }}
         </div>
 
         <p>
             El dispositivo
-            <a href="{{ device_href }}">{{ device_name }}</a>
-            acaba de
-            {% if event == 'geofence-leave' %}
-                salir de
-            {% else %}
-                entrar a
-            {% endif %}
-            la geocerca
-            <a href="{{ geofence_href }}">{{ geofence_name }}</a>.
+            <a href="{{ device.href }}">{{ device.name }}</a>
+            acaba de entrar a la geocerca
+            <a href="{{ geofence.href }}">{{ geofence.name }}</a>.
         </p>
     </td>
 </tr>

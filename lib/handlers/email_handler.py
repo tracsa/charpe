@@ -38,9 +38,7 @@ class EmailHandler(BaseHandler):
             bcc = recipients,
         )
 
-        msg.html = self.render_template('{}.html'.format(message['event']),
-            event          = _.get(message['event'], ''),
-        )
+        msg.html = self.render_template('{}.html'.format(message['event']), **message['data'])
 
         self.mail.send(msg)
 
