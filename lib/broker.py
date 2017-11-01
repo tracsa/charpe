@@ -16,9 +16,10 @@ class Broker:
 
     def __init__(self, config):
         self.redis = redis.StrictRedis(
-            host = config.REDIS_HOST,
-            port = config.REDIS_PORT,
-            db = config.REDIS_DB,
+            host             = config.REDIS_HOST,
+            port             = config.REDIS_PORT,
+            db               = config.REDIS_DB,
+            decode_responses = True,
         )
         self.pool = Pool(config.WORKERS, init_worker)
         self.config = config

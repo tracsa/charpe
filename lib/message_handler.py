@@ -90,7 +90,7 @@ class MessageHandler:
             log.warning(event)
             return
 
-        channel = event['channel'].decode('utf8')
+        channel = event['channel']
 
         return {
             'data': data['data'],

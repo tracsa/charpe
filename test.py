@@ -20,6 +20,7 @@ class BrokerTestCase(unittest.TestCase):
 
         self.eng = Engine(
             db = self.config['REDIS_DB'],
+            decode_responses = True,
         )
 
         Subscription.prefix = classmethod(prefix)
