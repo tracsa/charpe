@@ -6,7 +6,7 @@
 {% block body %}
 <tr>
     <td>
-        {{ google_map(width=600, height=228) }}
+        {{ google_map(width=600, height=228, polyline=geofence.polyline, marker=device.last_pos) }}
     </td>
 </tr>
 <tr>
