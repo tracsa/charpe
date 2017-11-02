@@ -33,3 +33,10 @@ MAIL_USE_SSL            = False
 MAIL_USERNAME           = 'devel@mg.getfleety.com'
 MAIL_PASSWORD           = ''
 MAIL_DEFAULT_SENDER     = '"Fleety Devel" <devel@mg.getfleety.com>'
+
+# For template rendering
+URL_PROTOCOL = 'https'
+URL_SUBDOMAIN = 'com'
+
+# For google static maps
+GOOGLE_API_STATIC_MAPS_KEY = ''

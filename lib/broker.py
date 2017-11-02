@@ -11,20 +11,15 @@ import signal
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-def end_task(res):
-    pass
-
-def task_failed(error):
-    log.warning('{} {}'.format(type(error).__name__, error))
-
 
 class Broker:
 
     def __init__(self, config):
         self.redis = redis.StrictRedis(
-            host = config.REDIS_HOST,
-            port = config.REDIS_PORT,
-            db = config.REDIS_DB,
+            host             = config.REDIS_HOST,
+            port             = config.REDIS_PORT,
+            db               = config.REDIS_DB,
+            decode_responses = True,
         )
         self.pool = Pool(config.WORKERS, init_worker)
         self.config = config
@@ -47,8 +42,6 @@ class Broker:
                     if message:
                         pool.apply_async(self.handler,
                             args           = [message],
-                            callback       = end_task,
-                            error_callback = task_failed,
                         )
 
                     time.sleep(self.config.SLEEP_TIME)

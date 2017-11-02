@@ -1,10 +1,13 @@
 from . import BaseHandler
 from .. import mail
-from ..i18n import _
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 import os
 import logging
 
+SUBJECTS = {
+    'geofence-enter': Template('[Fleety] {{ device.name }} entró a {{ geofence.name }}'),
+    'geofence-leave': Template('[Fleety] {{ device.name }} salió de {{ geofence.name }}'),
+}
 
 class EmailHandler(BaseHandler):
 
@@ -16,11 +19,18 @@ class EmailHandler(BaseHandler):
         self.mail = mail.Mail(self.config)
 
     def render_template(self, name, **kwargs):
-        template = self.jinja.select_template([name])
+        template = self.jinja.get_template('{}.html'.format(name),
+            globals = {
+                'config': self.config,
+            },
+        )
 
         return template.render(**kwargs)
 
     def publish(self, message):
+        if message['event'] not in SUBJECTS:
+            return logging.error('Subject for event {} not defined, email will not be sent'.format(message['event']))
+
         def build_recipient(user):
             return '{} {} <{}>'.format(
                 user['name'],
@@ -33,21 +43,15 @@ class EmailHandler(BaseHandler):
             message['users']
         ))
 
+        subject = SUBJECTS[message['event']].render(**message['data'])
+
         msg = mail.Message(
-            subject = _.get(message['event'], ''),
+            subject = subject,
             bcc = recipients,
         )
 
-        msg.html = self.render_template('{}.html'.format(message['event']),
-            event          = _.get(message['event'], ''),
-            # org_name       = message['org'],
-            # static_map_url = static_map_url,
-            # device_name    = device_name,
-            # geofence_name  = geofence_name,
-            # device_href    = device_href,
-            # geofence_href  = geofence_href,
-        )
+        msg.html = self.render_template(message['event'], **message['data'])
 
         self.mail.send(msg)
 
-        logging.debug('Email sent')
+        logging.debug('Email for event {} sent to {}'.format(message['event'], ', '.join(recipients)))

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% from 'partials/macros.html' import google_map with context %}
+
+{% block title %}{{ device.name }} {% block title_replace %}{% endblock %} {{ geofence.name }}{% endblock %}
+
+{% block body %}
+<tr>
+    <td>
+        {{ google_map(width=600, height=228, polyline=geofence.polyline, marker=device.last_pos) }}
+    </td>
+</tr>
+<tr>
+    <td class="container-padding content" align="left" style="color: #707c8d;padding: 40px 24px;background-color:#ffffff">
+        <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550">
+            {{ device.name }}
+            {% block body_replace %}{% endblock %}
+            {{ geofence.name }}
+        </div>
+
+        <p>
+            El dispositivo
+            <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/device/{{ device.id }}">{{ device.name }}</a>
+            {% block description_replace %}{% endblock %}
+            <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/geofence/{{ geofence.id }}">{{ geofence.name }}</a>.
+        </p>
+    </td>
+</tr>
+{% endblock %}

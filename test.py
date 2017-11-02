@@ -20,6 +20,7 @@ class BrokerTestCase(unittest.TestCase):
 
         self.eng = Engine(
             db = self.config['REDIS_DB'],
+            decode_responses = True,
         )
 
         Subscription.prefix = classmethod(prefix)
@@ -47,6 +48,7 @@ class BrokerTestCase(unittest.TestCase):
             'handler': 'Email',
             'params': [{}],
             'users': [u1.to_json()],
+            'data': {},
         }
         out2 = {
             'channel': 'a:b:c',
@@ -54,6 +56,7 @@ class BrokerTestCase(unittest.TestCase):
             'handler': 'Email',
             'params': [{}],
             'users': [u1.to_json()],
+            'data': {},
         }
 
         self.assertEqual(list(mh.get_subscribers(e1)), [out1])
@@ -79,6 +82,7 @@ class BrokerTestCase(unittest.TestCase):
             'handler': 'Email',
             'users': [u1.to_json()],
             'params': [{}],
+            'data': {},
         }
         o2 = {
             'event': 'e',
@@ -86,6 +90,7 @@ class BrokerTestCase(unittest.TestCase):
             'handler': 'Email',
             'users': [u2.to_json()],
             'params': [{}],
+            'data': {},
         }
 
         self.assertEqual(list(mh.get_subscribers(e1)), [o1])
@@ -107,9 +112,9 @@ class BrokerTestCase(unittest.TestCase):
         e2 = { 'event': 'z', 'channel': 'a:b:d', 'org': 'testing' }
         e3 = { 'event': 'z', 'channel': 'a:e:f', 'org': 'testing' }
 
-        o1 = { 'channel': 'a:b:c', 'event': 'z', 'handler': 'Email', 'params': [{}, {}, {}], 'users': [u1.to_json(), u2.to_json(), u3.to_json()] }
-        o2 = { 'channel': 'a:b:d', 'event': 'z', 'handler': 'Email', 'params': [{}, {}], 'users': [u1.to_json(), u2.to_json()] }
-        o3 = { 'channel': 'a:e:f', 'event': 'z', 'handler': 'Email', 'params': [{}], 'users': [u1.to_json()] }
+        o1 = { 'channel': 'a:b:c', 'event': 'z', 'handler': 'Email', 'data': {}, 'params': [{}, {}, {}], 'users': [u1.to_json(), u2.to_json(), u3.to_json()] }
+        o2 = { 'channel': 'a:b:d', 'event': 'z', 'handler': 'Email', 'data': {}, 'params': [{}, {}], 'users': [u1.to_json(), u2.to_json()] }
+        o3 = { 'channel': 'a:e:f', 'event': 'z', 'handler': 'Email', 'data': {}, 'params': [{}], 'users': [u1.to_json()] }
 
         mh = MessageHandler(self.config)
 
@@ -156,6 +161,7 @@ class BrokerTestCase(unittest.TestCase):
             'event': 'z',
             'channel': 'a:b:c',
             'org': 'testing',
+            'data': {'key': 'val'},
         }))
 
         self.assertDictEqual(subs[0], {
@@ -164,6 +170,7 @@ class BrokerTestCase(unittest.TestCase):
             'users': [u1.to_json(), u2.to_json()],
             'handler': 'Email',
             'params': [{'a': '1'}, {'a': '2'}],
+            'data': {'key': 'val'},
         })
         self.assertDictEqual(subs[1], {
             'channel': 'a:b:c',
@@ -171,6 +178,7 @@ class BrokerTestCase(unittest.TestCase):
             'users': [u1.to_json(), u2.to_json()],
             'handler': 'Sms',
             'params': [{'a': '3'}, {'a': '4'}],
+            'data': {'key': 'val'},
         })
 
     def test_event_parsing(self):

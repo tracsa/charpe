@@ -15,6 +15,12 @@ class MessageHandler:
 
     # ...than this one, so no conexion can be shared between the two
     def __call__(self, event):
+        try:
+            self.call(event)
+        except Exception as error:
+            log.exception('{} {}'.format(type(error).__name__, error))
+
+    def call(self, event):
         parsed_event = self.parse_event(event)
 
         if parsed_event is None:
@@ -26,8 +32,7 @@ class MessageHandler:
             self.get_handler(sub['handler']).publish(sub)
 
     def get_subscribers(self, event):
-        # we will now check for suscriptions and dispatch them with
-        # the handlers
+        ''' Reads and groups subscriptions to an event '''
         channel  = event['channel']
 
         # We need to bind the models to the engine and add prefix function
@@ -46,6 +51,7 @@ class MessageHandler:
                     'users': [sub.proxy.user.get().to_json()],
                     'handler': sub.handler,
                     'params': [sub.params],
+                    'data': event['data'] if 'data' in event else dict(),
                 }
             else:
                 subs[sub.handler]['users'].append(sub.proxy.user.get().to_json())
@@ -84,7 +90,7 @@ class MessageHandler:
             log.warning(event)
             return
 
-        channel = event['channel'].decode('utf8')
+        channel = event['channel']
 
         return {
             'data': data['data'],
