@@ -19,5 +19,4 @@ def deploy():
             run('pip install -r requirements.txt')
 
     if prompt('Restart server? [y/N]').lower().startswith('y'):
-        # run('sudo systemctl restart fleety-back')
-        pass
+        run('systemctl --user restart fleety-broker')
