@@ -6,6 +6,7 @@ import logging
 
 SUBJECTS = {
     'geofence-enter': Template('[Fleety] {{ device.name }} entró a {{ geofence.name }}'),
+    'geofence-leave': Template('[Fleety] {{ device.name }} salió de {{ geofence.name }}'),
 }
 
 class EmailHandler(BaseHandler):
@@ -27,6 +28,9 @@ class EmailHandler(BaseHandler):
         return template.render(**kwargs)
 
     def publish(self, message):
+        if message['event'] not in SUBJECTS:
+            return logging.error('Subject for event {} not defined, email will not be sent'.format(message['event']))
+
         def build_recipient(user):
             return '{} {} <{}>'.format(
                 user['name'],
@@ -50,4 +54,4 @@ class EmailHandler(BaseHandler):
 
         self.mail.send(msg)
 
-        logging.debug('Email sent')
+        logging.debug('Email for event {} sent to {}'.format(message['event'], ', '.join(recipients)))

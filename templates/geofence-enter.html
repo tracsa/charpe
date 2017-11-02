@@ -1,28 +1,7 @@
-{% extends "layout.html" %}
-{% from 'partials/macros.html' import google_map with context %}
+{% extends "geofence.html" %}
 
-{% block title %}{{ device.name }} salió de {{ geofence.name }}{% endblock %}
+{% block title_replace %}entró a{% endblock %}
 
-{% block body %}
-<tr>
-    <td>
-        {{ google_map(width=600, height=228, polyline=geofence.polyline, marker=device.last_pos) }}
-    </td>
-</tr>
-<tr>
-    <td class="container-padding content" align="left" style="color: #707c8d;padding: 40px 24px;background-color:#ffffff">
-        <div class="title" style="font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;color:#374550">
-            {{ device.name }}
-            entró a
-            {{ geofence.name }}
-        </div>
+{% block body_replace %}entró a{% endblock %}
 
-        <p>
-            El dispositivo
-            <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/device/{{ device.id }}">{{ device.name }}</a>
-            acaba de entrar a la geocerca
-            <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/geofence/{{ geofence.id }}">{{ geofence.name }}</a>.
-        </p>
-    </td>
-</tr>
-{% endblock %}
+{% block description_replace %}acaba de entrar a la geocerca{% endblock %}
