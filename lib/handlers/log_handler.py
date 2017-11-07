@@ -30,4 +30,4 @@ class LogHandler(BaseHandler):
 
         cur.close()
 
-        logging.debug('Log entry created')
+        logging.debug('[{}] Logged {} to database'.format(channel, event))
