@@ -4,7 +4,7 @@
 {% block title %}{{ device.name }} {% block title_replace %}{% endblock %} {{ geofence.name }}{% endblock %}
 
 {% block map %}
-    {{ google_map(width=600, height=228, polyline=geofence.polyline, marker=device.last_pos) }}
+    {{ google_map(width=600, height=228, area=geofence.polyline, marker=device.last_pos) }}
 {% endblock %}
 
 {% block body_title %}

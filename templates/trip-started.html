@@ -2,7 +2,11 @@
 {% from 'partials/macros.html' import google_map with context %}
 
 {% block map %}
-    {{ google_map(width=600, height=228) }}
+    {% if route %}
+        {{ google_map(width=600, height=228, path=route.polyline) }}
+    {% else %}
+        {{ google_map(width=600, height=228) }}
+    {% endif %}
 {% endblock %}
 
 {% block body_title %}
