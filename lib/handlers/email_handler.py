@@ -7,6 +7,10 @@ import logging
 SUBJECTS = {
     'geofence-enter': Template('[Fleety] {{ device.name }} entró a {{ geofence.name }}'),
     'geofence-leave': Template('[Fleety] {{ device.name }} salió de {{ geofence.name }}'),
+    'trip-started': Template('[Fleety] {{ device.name }} inició viaje desde {{ trip.origin }} hasta {{ trip.destination }}'),
+    'trip-finished': Template('[Fleety] {{ device.name }} terminó viaje desde {{ trip.origin }} hasta {{ trip.destination }}'),
+    'trip-stop': Template('[Fleety] {{ device.name }} se detivo durante el viaje'),
+    'trip-offroute': Template('[Fleety] {{ device.name }} se salió de la ruta planeada'),
 }
 
 class EmailHandler(BaseHandler):
