@@ -26,7 +26,9 @@ class MessageHandler:
         if parsed_event is None:
             return
 
-        self.get_handler('Log').publish(parsed_event)
+        # skip some configured events in the log
+        if parsed_event['event'] not in self.config['DO_NOT_LOG']:
+            self.get_handler('Log').publish(parsed_event)
 
         for sub in self.get_subscribers(parsed_event):
             self.get_handler(sub['handler']).publish(sub)

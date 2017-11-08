@@ -1,0 +1,17 @@
+{% extends "layouts/map-layout.html" %}
+{% from 'partials/macros.html' import google_map with context %}
+
+{% block map %}
+    {{ google_map(width=600, height=228) }}
+{% endblock %}
+
+{% block body_title %}
+    {{ device_name }} salió de su ruta programada
+{% endblock %}
+
+{% block body_content %}
+    El dispositivo
+    <a href="{{ device_href }}">{{ device_name }}</a>
+    acaba de salir de la ruta programada en el viaje
+    <a href="{{ trip_href }}">{{ trip_name }}</a>.
+{% endblock %}

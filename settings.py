@@ -12,6 +12,12 @@ SLEEP_TIME = 0.001
 # Channels
 CHANNEL_PATTERN = '*:*:*'
 
+# Do not log this events as they happen too often.
+# Events are loggued automatically
+DO_NOT_LOG = [
+    'device-update',
+]
+
 # Postgres connection params
 POSTGRES_DB = 'fleety'
 POSTGRES_USER = None

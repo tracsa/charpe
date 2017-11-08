@@ -1,0 +1,14 @@
+{% extends "layouts/map-layout.html" %}
+{% from 'partials/macros.html' import google_map with context %}
+
+{% block map %}
+    {{ google_map(width=600, height=228) }}
+{% endblock %}
+
+{% block body_title %}
+    El dispositivo {{ device.name }} acaba de iniciar un viaje de {{ trip.origin }} a {{ trip.destination }}
+{% endblock %}
+
+{% block body_content %}
+Puedes rastrear el progreso del viaje desde el siguiente <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/trip/{{ trip.id }}">enlace</a>.
+{% endblock %}
