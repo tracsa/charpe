@@ -3,9 +3,9 @@
 
 {% block map %}
     {% if route %}
-        {{ google_map(width=600, height=228, path=route.polyline) }}
+        {{ google_map(width=600, height=228, markers=[trip.origin_pos, trip.destination_pos], path=route.polyline) }}
     {% else %}
-        {{ google_map(width=600, height=228) }}
+        {{ google_map(width=600, height=228, markers=[trip.origin_pos, trip.destination_pos]) }}
     {% endif %}
 {% endblock %}
 

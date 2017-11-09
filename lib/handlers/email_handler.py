@@ -58,4 +58,4 @@ class EmailHandler(BaseHandler):
 
         self.mail.send(msg)
 
-        logging.debug('Email for event {} sent to {}'.format(message['event'], ', '.join(recipients)))
+        logging.info('Email for event {} sent to {}'.format(message['event'], ', '.join(recipients)))
