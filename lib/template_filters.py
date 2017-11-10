@@ -12,5 +12,7 @@ def datetimeformat(date):
     return utc_dt.astimezone(tz).strftime(ES_MX_FORMAT)
 
 def diffinhours(date, otherdate):
-    hours = (datetime.strptime(date, ISO_FORMAT) - datetime.strptime(otherdate, ISO_FORMAT)).seconds // 3600
-    return '{}h'.format(hours)
+    delta = datetime.strptime(date, ISO_FORMAT) - datetime.strptime(otherdate, ISO_FORMAT)
+    hours = delta.total_seconds() / 3600
+
+    return '{:5.3}h'.format(hours)

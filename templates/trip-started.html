@@ -10,12 +10,17 @@
 {% endblock %}
 
 {% block body_title %}
-    El dispositivo {{ device.name }} acaba de iniciar un viaje de {{ trip.origin }} a {{ trip.destination }}
+El dispositivo {{ device.name }} acaba de iniciar el viaje<br>
+{{ trip.origin }} -> {{ trip.destination }}
 {% endblock %}
 
 {% block body_content %}
     {% if user %}
         <p>Conductor: <strong>{{ user.name }} {{ user.last_name }}</strong><p>
+    {% endif %}
+
+    {% if route %}
+        <p>Ruta: <strong>{{ route.name }}</strong></p>
     {% endif %}
 
     <p>
