@@ -14,5 +14,10 @@
 {% endblock %}
 
 {% block body_content %}
-Puedes rastrear el progreso del viaje desde el siguiente <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/trip/{{ trip.id }}">enlace</a>.
+    <p>
+        Salida planeada: <strong>{{ trip.scheduled_departure|datetimeformat }}</strong>, real: <strong>{{ trip.departure|datetimeformat }}</strong><br>
+        Llegada planeada: <strong>{{ trip.scheduled_arrival|datetimeformat }}</strong>, ETA: <strong>{{ trip.scheduled_arrival|diffinhours(trip.scheduled_departure) }}</strong><br>
+    </p>
+
+    <p>Puedes rastrear el progreso del viaje desde el siguiente <a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/trip/{{ trip.id }}">enlace</a>.</p></p>
 {% endblock %}
