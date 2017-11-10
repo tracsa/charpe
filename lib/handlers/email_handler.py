@@ -1,8 +1,10 @@
-from . import BaseHandler
-from .. import mail
 from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 import os
 import logging
+
+from . import BaseHandler
+from .. import mail
+from ..template_filters import datetimeformat, diffinhours
 
 SUBJECTS = {
     'geofence-enter': Template('[Fleety] {{ device.name }} entró a {{ geofence.name }}'),
@@ -20,6 +22,8 @@ class EmailHandler(BaseHandler):
             loader = FileSystemLoader(os.path.join(os.path.dirname(__name__), 'templates')),
             autoescape = select_autoescape(['html']),
         )
+        self.jinja.filters['datetimeformat'] = datetimeformat
+        self.jinja.filters['diffinhours'] = diffinhours
         self.mail = mail.Mail(self.config)
 
     def render_template(self, name, **kwargs):
@@ -58,4 +62,4 @@ class EmailHandler(BaseHandler):
 
         self.mail.send(msg)
 
-        logging.debug('Email for event {} sent to {}'.format(message['event'], ', '.join(recipients)))
+        logging.info('Email for event {} sent to {}'.format(message['event'], ', '.join(recipients)))
