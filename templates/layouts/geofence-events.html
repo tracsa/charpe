@@ -16,7 +16,7 @@
 
 {% block body_content %}
     El dispositivo
-    {{ macro obj_link(obj='device', id=device.id, caption=device.name) }}
+    {{ obj_link(obj='device', id=device.id, caption=device.name) }}
     {% block description_replace %}{% endblock %}
-    {{ macro obj_link(obj='geofence', id=geofence.id, caption=geofence.name) }}
+    {{ obj_link(obj='geofence', id=geofence.id, caption=geofence.name) }}
 {% endblock %}
