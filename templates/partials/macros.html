@@ -2,6 +2,6 @@
 <img width="{{ width }}" height="{{ height }}" style="background: #EAEAEA; display: block;" src="https://maps.googleapis.com/maps/api/staticmap?size={{ width }}x{{ height }}&sensor=true&key={{ config.GOOGLE_API_STATIC_MAPS_KEY }}{% if center %}&center={{ center.lat }},{{ center.lon }}{% endif %}{% if zoom %}&zoom={{ zoom }}{% endif %}{% if path %}&path=weight:3|color:0x206D5AAA|enc:{{ path }}{% endif %}{% if area %}&path=weight:3|color:0x206D5AAA|fillcolor:0x37BC9B55|enc:{{ area }}{% endif %}{% if markers %}&markers={% for marker in markers %}{{ marker.lat }},{{ marker.lon }}{% if not loop.last %}|{% endif %}{% endfor %}{% endif %}" />
 {% endmacro %}
 
-{% macro obj_link(obj='', id='', caption='') %}
-<a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#/{{ obj }}/{{ id }}">{{ caption }}</a>
+{% macro link(endpoint='', caption='') %}
+<a href="{{ config.URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ config.URL_SUBDOMAIN }}/#{{ endpoint }}">{{ caption }}</a>
 {% endmacro %}
