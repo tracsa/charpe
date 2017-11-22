@@ -13,6 +13,7 @@ SUBJECTS = {
     'trip-finished': Template('[Fleety] {{ device.name }} terminó viaje desde {{ trip.origin }} hasta {{ trip.destination }}'),
     'trip-stop': Template('[Fleety] {{ device.name }} se detivo durante el viaje'),
     'trip-offroute': Template('[Fleety] {{ device.name }} se salió de la ruta planeada'),
+    'user-registered': Template('[Fleety] Bienvenido a Fleety'),
 }
 
 class EmailHandler(BaseHandler):
