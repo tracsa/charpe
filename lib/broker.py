@@ -32,6 +32,7 @@ class Broker:
 
         ps = self.redis.pubsub()
 
+        log.info('Subscribing broker to pattern: "{}"'.format(self.config.CHANNEL_PATTERN))
         ps.psubscribe(self.config.CHANNEL_PATTERN)
 
         with self.pool as pool:

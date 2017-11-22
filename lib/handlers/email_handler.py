@@ -14,6 +14,8 @@ SUBJECTS = {
     'trip-stop': Template('[Fleety] {{ device.name }} se detivo durante el viaje'),
     'trip-offroute': Template('[Fleety] {{ device.name }} se salió de la ruta planeada'),
     'user-registered': Template('[Fleety] Bienvenido a Fleety'),
+
+    'server-error': Template('[Fleety] Server error'),
 }
 
 class EmailHandler(BaseHandler):

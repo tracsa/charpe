@@ -1,0 +1,29 @@
+{% extends "layouts/map-layout.html" %}
+
+{% block body_title %}
+[{{ method }}] api.getfleety.{{ config.URL_SUBDOMAIN }}{{ path }}
+{% endblock %}
+
+{% block body_content %}
+  {% if user %}
+    <strong>Usuario:</strong>
+    {{ user.name }} ({{ user.id }})<br>
+  {% endif %}
+
+  {% if org_name %}
+    <strong>Organización:</strong> {{ org_name }}<br>
+  {% endif %}
+
+  {% if get_data %}
+    <strong>Parámetros GET:</strong><br>
+    <code><pre>{{ get_data }}</pre></code>
+  {% endif %}
+
+  {% if post_data %}
+    <strong>Parámetros POST:</strong><br>
+    <code><pre>{{ post_data }}</pre></code>
+  {% endif %}
+
+  <strong>Traza:</strong><br>
+  <code><pre>{{ traceback }}</pre></code>
+{% endblock %}
