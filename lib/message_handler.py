@@ -38,7 +38,7 @@ class MessageHandler:
         channel  = event['channel']
 
         # We need to bind the models to the engine and add prefix function
-        self.bind_models(event['org'])
+        self.bind_models()
 
         def filter_events(sub):
             return sub.event == '*' or sub.event == event['event']
@@ -101,7 +101,7 @@ class MessageHandler:
             'org': channel.split(':')[0],
         }
 
-    def bind_models(self, org):
+    def bind_models(self):
         ''' bind the models to an engine, and set the prefix function '''
         if self.engine is None:
             self.engine = Engine(
@@ -112,8 +112,3 @@ class MessageHandler:
 
             Subscription.set_engine(self.engine)
             User.set_engine(self.engine)
-
-        def prefix(cls):
-            return org
-
-        Subscription.prefix = classmethod(prefix)

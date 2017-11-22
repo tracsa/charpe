@@ -1,7 +1,7 @@
 from coralillo import Model, BoundedModel, fields
 
 
-class Subscription(BoundedModel):
+class Subscription(Model):
     channel = fields.TreeIndex()
     event   = fields.Text()
     user    = fields.ForeignIdRelation('lib.models.User', inverse='subscriptions')
