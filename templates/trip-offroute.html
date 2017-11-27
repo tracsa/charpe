@@ -14,5 +14,5 @@
     El dispositivo
     {{ link(endpoint='/device/'+device.id, caption=device.name) }}
     se alejó de la ruta programada <strong>{{ distance|round(2) }} km</strong> el <strong>{{ time|datetimeformat }}</strong> en el viaje
-    {{ link(endpoint='/trip/'+trip.id, caption=trip.origin+'->'+trip.destination) }}
+    {{ link(endpoint='/trip/'+str(trip.id), caption=trip.origin+'->'+trip.destination) }}
 {% endblock %}
