@@ -14,5 +14,5 @@
     El dispositivo
     {{ link(endpoint='/device/'+device.id, caption=device.name) }}
     se detuvo por {{ stop_time//60000 }} minutos comenzando el {{ arrived|datetimeformat }} en el viaje
-    {{ link(endpoint='/trip/'+trip.id, caption=trip.origin+'->'+trip.destination) }}
+    {{ link(endpoint='/trip/'+str(trip.id), caption=trip.origin+'->'+trip.destination) }}
 {% endblock %}
