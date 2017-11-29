@@ -7,6 +7,7 @@ from .. import mail
 from ..template_filters import datetimeformat, diffinhours
 
 SUBJECTS = {
+    'alarm': Template('[Fleety] Alarma tipo {{ type }} para {{ device.name }}'),
     'geofence-enter': Template('[Fleety] {{ device.name }} entró a {{ geofence.name }}'),
     'geofence-leave': Template('[Fleety] {{ device.name }} salió de {{ geofence.name }}'),
     'trip-started': Template('[Fleety] {{ device.name }} inició viaje desde {{ trip.origin }} hasta {{ trip.destination }}'),
