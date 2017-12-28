@@ -3,7 +3,9 @@
 {% from 'partials/macros.html' import link with context %}
 
 {% block map %}
-    {{ google_map(width=600, height=228, markers=[device.last_pos]) }}
+    {% if device.last_pos %}
+        {{ google_map(width=600, height=228, markers=[device.last_pos]) }}
+    {% endif %}
 {% endblock %}
 
 {% block body_title %}
