@@ -7,8 +7,8 @@ from datetime import datetime
 
 class LogHandler(BaseHandler):
 
-    def initialize(self):
-        self.postgres = psycopg2.connect(
+    def get_conn(self):
+        return psycopg2.connect(
             dbname   = self.config['POSTGRES_DB'],
             user     = self.config['POSTGRES_USER'],
             password = self.config['POSTGRES_PASSWORD'],
@@ -17,17 +17,19 @@ class LogHandler(BaseHandler):
         )
 
     def publish(self, message):
-        channel = message['channel']
-        subdomain = channel.split(':')[0]
-        event = message['event']
-        data = json.dumps(message['data'])
+        channel    = message['channel']
+        subdomain  = channel.split(':')[0]
+        event      = message['event']
+        data       = json.dumps(message['data'])
         created_at = datetime.now()
 
+        conn = self.get_conn()
         cur = self.postgres.cursor()
 
         cur.execute("INSERT INTO log (org_subdomain, channel, event, data, created_at) VALUES (%s, %s, %s, %s, %s)", (subdomain, channel, event, data, created_at))
         self.postgres.commit()
 
         cur.close()
+        conn.close()
 
         logging.debug('[{}] Logged {} to database'.format(channel, event))
