@@ -24,10 +24,10 @@ class LogHandler(BaseHandler):
         created_at = datetime.now()
 
         conn = self.get_conn()
-        cur = self.postgres.cursor()
+        cur = conn.cursor()
 
         cur.execute("INSERT INTO log (org_subdomain, channel, event, data, created_at) VALUES (%s, %s, %s, %s, %s)", (subdomain, channel, event, data, created_at))
-        self.postgres.commit()
+        conn.commit()
 
         cur.close()
         conn.close()
