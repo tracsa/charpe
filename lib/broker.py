@@ -2,7 +2,6 @@ from .logger import log
 from .message_handler import MessageHandler
 from multiprocessing import Pool
 import redis
-import time
 import signal
 
 # https://stackoverflow.com/questions/27745842/redis-pubsub-and-message-queueing
@@ -38,14 +37,12 @@ class Broker:
         with self.pool as pool:
             while True:
                 try:
-                    message = ps.get_message()
+                    message = ps.get_message(timeout=1.0)
 
                     if message:
                         pool.apply_async(self.handler,
                             args           = [message],
                         )
-
-                    time.sleep(self.config.SLEEP_TIME)
                 except KeyboardInterrupt as e:
                     break
 
