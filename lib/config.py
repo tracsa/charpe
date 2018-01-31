@@ -1,5 +1,6 @@
 import os
 import types
+import errno
 
 
 class Config(dict):

@@ -18,7 +18,7 @@ if __name__ == '__main__':
     import logging
 
     logging.basicConfig(
-        format = '[%(asctime)s] %(module)s %(levelname)s %(message)s [%(filename)s:%(lineno)s]',
+        format = '[%(levelname)s] %(message)s - %(filename)s:%(lineno)s',
         level  = config.LOG_LEVEL,
     )
 

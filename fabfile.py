@@ -15,7 +15,7 @@ def deploy():
     with cd(PROJECT_PATH):
         run('git pull')
 
-        with prefix('source env/bin/activate'):
+        with prefix('source .env/bin/activate'):
             run('pip install -r requirements.txt')
 
     if prompt('Restart server? [y/N]').lower().startswith('y'):
