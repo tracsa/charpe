@@ -15,6 +15,7 @@ SUBJECTS = {
     'trip-stop': Template('[Fleety] {{ device.name }} se detivo durante el viaje'),
     'trip-offroute': Template('[Fleety] {{ device.name }} se salió de la ruta planeada'),
     'user-registered': Template('[Fleety] Bienvenido a Fleety'),
+    'report-finished': Template('[Fleety] Tu reporte {% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %} está listo'),
 
     'server-error': Template('[Fleety] Server error'),
 }
