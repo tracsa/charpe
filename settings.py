@@ -45,3 +45,6 @@ URL_SUBDOMAIN = 'com'
 
 # For google static maps
 GOOGLE_API_STATIC_MAPS_KEY = ''
+
+# For the telegram handler
+TELEGRAM_BOT_KEY = '<bot key>'

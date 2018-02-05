@@ -15,3 +15,4 @@ class User(Model):
     email     = fields.Text(index=True, regex='^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$')
     is_active = fields.Bool(default=True)
     subscriptions = fields.SetRelation(Subscription, inverse='user')
+    telegram_chat_id = fields.Text()
