@@ -5,7 +5,7 @@ import requests
 from . import BaseHandler
 
 TEMPLATES = {
-    'alarm': Template('\u26a0 #Alarma tipo #{{ type }} para el dispositivo [{{ device.name }}]({{ URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ URL_SUBDOMAIN }}/#/device/{{ device.id }}) \u26a0'),
+    'alarm': Template('⚠️ #Alarma tipo #{{ type }} para el dispositivo [{{ device.name }}]({{ URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ URL_SUBDOMAIN }}/#/device/{{ device.id }}) ⚠️'),
     'geofence-enter': Template('⭕️ ⬅️ 🚲 El dispositivo {{ device.name }} #entróAGeocerca {{ geofence.name }}'),
     'geofence-leave': Template('🚲 ⬅️ ⭕️ El dispositivo {{ device.name }} #salióDeGeocerca {{ geofence.name }}'),
 }
