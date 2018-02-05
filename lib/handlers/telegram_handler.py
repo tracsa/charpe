@@ -5,7 +5,7 @@ import requests
 from . import BaseHandler
 
 TEMPLATES = {
-    'alarm': Template('\u26a0 #Alarma tipo #{{ type }} para {{ device.name }} \u26a0'),
+    'alarm': Template('\u26a0 #Alarma tipo #{{ type }} para el dispositivo [{{ device.name }}]({{ URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ URL_SUBDOMAIN }}/#/device/{{ device.id }}) \u26a0'),
 }
 
 class TelegramHandler(BaseHandler):
@@ -18,11 +18,12 @@ class TelegramHandler(BaseHandler):
             if not user['telegram_chat_id']:
                 continue
 
-            msg = TEMPLATES[message['event']].render(**message['data'])
+            msg = TEMPLATES[message['event']].render(**{**message['data'], **self.config})
 
             requests.post('https://api.telegram.org/bot{}/sendMessage'.format(self.config['TELEGRAM_BOT_KEY']), data={
                 'chat_id': user['telegram_chat_id'],
                 'text': msg,
+                'parse_mode': 'Markdown',
             })
 
         logging.info('Telegram message for event {} sent'.format(message['event']))
