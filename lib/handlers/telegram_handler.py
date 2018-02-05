@@ -26,4 +26,11 @@ class TelegramHandler(BaseHandler):
                 'parse_mode': 'Markdown',
             })
 
+            if 'device' in message['data']:
+                requests.post('https://api.telegram.org/bot{}/sendLocation'.format(self.config['TELEGRAM_BOT_KEY']), data={
+                    'chat_id': user['telegram_chat_id'],
+                    'latitude': message['data']['device']['last_pos']['lat'],
+                    'longitude': message['data']['device']['last_pos']['lon'],
+                })
+
         logging.info('Telegram message for event {} sent'.format(message['event']))
