@@ -8,6 +8,7 @@ TEMPLATES = {
     'alarm': Template('⚠️ #Alarma tipo #{{ type }} para el dispositivo [{{ device.name }}]({{ URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ URL_SUBDOMAIN }}/#/device/{{ device.id }}) ⚠️'),
     'geofence-enter': Template('⭕️ ⬅️ 🚲 El dispositivo {{ device.name }} #entróAGeocerca {{ geofence.name }}'),
     'geofence-leave': Template('🚲 ⬅️ ⭕️ El dispositivo {{ device.name }} #salióDeGeocerca {{ geofence.name }}'),
+    'report-finished': Template('📈 Tu reporte {% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %} está listo, descárgalo [aqui]({{ report.url }}).'),
 }
 
 class TelegramHandler(BaseHandler):
