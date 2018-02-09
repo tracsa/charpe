@@ -8,7 +8,7 @@ if __name__ == '__main__':
     # Load the config
     config = Config(os.path.dirname(os.path.realpath(__file__)))
     config.from_pyfile('settings.py')
-    config.from_envvar('BROKER_SETTINGS', silent=True)
+    config.from_envvar('BROKER_SETTINGS', silent=False)
 
     # Set the timezone
     os.environ['TZ'] = config.TIMEZONE

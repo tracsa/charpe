@@ -13,7 +13,7 @@ class BrokerTestCase(unittest.TestCase):
     def setUp(self):
         self.config = Config(os.path.dirname(os.path.realpath(__file__)))
         self.config.from_pyfile('settings.py')
-        self.config.from_pyfile('settings_testing.py')
+        self.config.from_envvar('BROKER_SETTINGS', silent=False)
 
         def prefix(cls):
             return 'testing'
@@ -134,6 +134,7 @@ class BrokerTestCase(unittest.TestCase):
                 'users': [u1.to_json()],
                 'handler': 'Email',
                 'params': [{'a': '1'}],
+                'data': {},
             })
 
             self.assertEqual(len(outbox), 1)
@@ -157,12 +158,12 @@ class BrokerTestCase(unittest.TestCase):
 
         mh = MessageHandler(self.config)
 
-        subs = list(mh.get_subscribers({
+        subs = sorted(mh.get_subscribers({
             'event': 'z',
             'channel': 'a:b:c',
             'org': 'testing',
             'data': {'key': 'val'},
-        }))
+        }), key=lambda x:x['handler'])
 
         self.assertDictEqual(subs[0], {
             'channel': 'a:b:c',

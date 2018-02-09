@@ -38,6 +38,7 @@ MAIL_USE_SSL            = False
 MAIL_USERNAME           = 'devel@mg.getfleety.com'
 MAIL_PASSWORD           = ''
 MAIL_DEFAULT_SENDER     = '"Fleety Devel" <devel@mg.getfleety.com>'
+MAIL_SUPPRESS_SEND      = False
 
 # For template rendering
 URL_PROTOCOL = 'https'

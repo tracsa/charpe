@@ -18,6 +18,8 @@ SUBJECTS = {
     'report-finished': Template('[Fleety] Tu reporte {% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %} está listo'),
 
     'server-error': Template('[Fleety] Server error'),
+
+    'demo-event': Template('Evento demo'),
 }
 
 class EmailHandler(BaseHandler):
