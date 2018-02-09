@@ -18,5 +18,4 @@ def deploy():
         with prefix('source .env/bin/activate'):
             run('pip install -r requirements.txt')
 
-    if prompt('Restart server? [y/N]').lower().startswith('y'):
-        run('systemctl --user restart fleety-broker')
+    run('systemctl --user restart fleety-broker')
