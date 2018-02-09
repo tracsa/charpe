@@ -158,12 +158,12 @@ class BrokerTestCase(unittest.TestCase):
 
         mh = MessageHandler(self.config)
 
-        subs = list(mh.get_subscribers({
+        subs = sorted(mh.get_subscribers({
             'event': 'z',
             'channel': 'a:b:c',
             'org': 'testing',
             'data': {'key': 'val'},
-        }))
+        }), key=lambda x:x['handler'])
 
         self.assertDictEqual(subs[0], {
             'channel': 'a:b:c',
