@@ -134,6 +134,7 @@ class BrokerTestCase(unittest.TestCase):
                 'users': [u1.to_json()],
                 'handler': 'Email',
                 'params': [{'a': '1'}],
+                'data': {},
             })
 
             self.assertEqual(len(outbox), 1)

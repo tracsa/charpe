@@ -1,0 +1,18 @@
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+  - virtualenv -p /usr/bin/python3 .env
+  - source .env/bin/activate
+  - pip install -r requirements.txt
+  - python test.py
+
+deploy:
+  stage: deploy
+  script:
+  - fab deploy
+  only:
+  - master
