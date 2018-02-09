@@ -13,7 +13,7 @@ class BrokerTestCase(unittest.TestCase):
     def setUp(self):
         self.config = Config(os.path.dirname(os.path.realpath(__file__)))
         self.config.from_pyfile('settings.py')
-        config.from_envvar('BROKER_SETTINGS', silent=False)
+        self.config.from_envvar('BROKER_SETTINGS', silent=False)
 
         def prefix(cls):
             return 'testing'
