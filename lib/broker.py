@@ -15,12 +15,12 @@ class Broker:
 
     def __init__(self, config):
         self.redis = redis.StrictRedis(
-            host             = config.REDIS_HOST,
-            port             = config.REDIS_PORT,
-            db               = config.REDIS_DB,
+            host             = config['REDIS_HOST'],
+            port             = config['REDIS_PORT'],
+            db               = config['REDIS_DB'],
             decode_responses = True,
         )
-        self.pool = Pool(config.WORKERS, init_worker)
+        self.pool = Pool(config['WORKERS'], init_worker)
         self.config = config
         self.handler = MessageHandler(config)
 
@@ -31,8 +31,8 @@ class Broker:
 
         ps = self.redis.pubsub()
 
-        log.info('Subscribing broker to pattern: "{}"'.format(self.config.CHANNEL_PATTERN))
-        ps.psubscribe(self.config.CHANNEL_PATTERN)
+        log.info('Subscribing broker to pattern: "{}"'.format(self.config['CHANNEL_PATTERN']))
+        ps.psubscribe(self.config['CHANNEL_PATTERN'])
 
         with self.pool as pool:
             while True:
