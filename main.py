@@ -24,4 +24,4 @@ if __name__ == '__main__':
 
     # Run the event loop
     loop = Loop(config)
-    loop.run()
+    loop.start()

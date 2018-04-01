@@ -1,21 +1,11 @@
 import logging
 
-# Redis connection
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-
-# Process management
-WORKERS = 2
-
-# Channels
-CHANNEL_PATTERN = '*:*:*'
-
-# Do not log this events as they happen too often.
-# Events are loggued automatically
-DO_NOT_LOG = [
-    'device-update',
-]
+# Rabbitmq
+RABBIT_HOST = 'localhost'
+RABBIT_QUEUE = 'pvm_process'
+RABBIT_NOTIFY_QUEUE = 'pvm_notify'
+RABBIT_CONSUMER_TAG = 'pvm_consumer_1'
+RABBIT_NO_ACK = True
 
 # Log configuration
 LOG_LEVEL = logging.INFO
@@ -36,9 +26,6 @@ MAIL_SUPPRESS_SEND      = False
 # For template rendering
 URL_PROTOCOL = 'https'
 URL_SUBDOMAIN = 'com'
-
-# For google static maps
-GOOGLE_API_STATIC_MAPS_KEY = ''
 
 # For the telegram handler
 TELEGRAM_BOT_KEY = '<bot key>'
