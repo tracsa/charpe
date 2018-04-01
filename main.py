@@ -1,5 +1,5 @@
 from lib.logger import log
-from lib.broker import Broker
+from lib.loop import Loop
 from itacate import Config
 import time
 import os
@@ -22,6 +22,6 @@ if __name__ == '__main__':
         level  = config['LOG_LEVEL'],
     )
 
-    # Run the broker class
-    brok = Broker(config)
-    brok.run()
+    # Run the event loop
+    loop = Loop(config)
+    loop.run()
