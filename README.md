@@ -1,6 +1,7 @@
-# Fleety Broker
+# PVM notification daemon
 
-Fleety's message delivery
+PVM's message delivery is in charge of distributing the  messages among the
+users of the platform
 
 ## Deploy
 

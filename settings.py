@@ -17,13 +17,6 @@ DO_NOT_LOG = [
     'device-update',
 ]
 
-# Postgres connection params
-POSTGRES_DB = 'fleety'
-POSTGRES_USER = None
-POSTGRES_PASSWORD = None
-POSTGRES_HOST = 'localhost'
-POSTGRES_PORT = 5432
-
 # Log configuration
 LOG_LEVEL = logging.INFO
 
@@ -35,9 +28,9 @@ MAIL_SERVER             = 'smtp.mailgun.org'
 MAIL_PORT               = '587'
 MAIL_USE_TLS            = True
 MAIL_USE_SSL            = False
-MAIL_USERNAME           = 'devel@mg.getfleety.com'
+MAIL_USERNAME           = ''
 MAIL_PASSWORD           = ''
-MAIL_DEFAULT_SENDER     = '"Fleety Devel" <devel@mg.getfleety.com>'
+MAIL_DEFAULT_SENDER     = ''
 MAIL_SUPPRESS_SEND      = False
 
 # For template rendering

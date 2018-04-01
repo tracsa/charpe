@@ -1,3 +1,3 @@
 import logging
 
-log = logging.getLogger('fleety-broker')
+log = logging.getLogger('pvm-notification')
