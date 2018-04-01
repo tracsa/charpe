@@ -1,5 +1,5 @@
 from .logger import log
-from .message_handler import MessageHandler
+from .handler import Handler
 from multiprocessing import Pool
 import signal
 import pika
@@ -15,7 +15,7 @@ class Loop:
     def __init__(self, config):
         self.pool = Pool(config['WORKERS'], init_worker)
         self.config = config
-        self.handler = MessageHandler(config)
+        self.handler = Handler(config)
 
         log.info('Initialized loop')
 

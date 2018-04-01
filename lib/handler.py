@@ -5,7 +5,7 @@ from .models import Subscription, User
 from coralillo import Engine
 
 
-class MessageHandler:
+class Handler:
 
     # this function runs in a different process...
     def __init__(self, config):
