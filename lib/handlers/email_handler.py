@@ -38,9 +38,10 @@ class EmailHandler(BaseHandler):
         msg = mail.Message(
             subject=subject,
             recipients=recipients,
+            sender='procesos@tracsa.com.mx',
         )
 
-        msg.html = self.render_template(message['event'], **message['data'])
+        msg.html = self.render_template('cacahuate')
 
         self.mail.send(msg)
 

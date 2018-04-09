@@ -19,7 +19,7 @@ MAIL_USE_TLS            = True
 MAIL_USE_SSL            = False
 MAIL_USERNAME           = ''
 MAIL_PASSWORD           = ''
-MAIL_DEFAULT_SENDER     = ''
+MAIL_DEFAULT_SENDER     = 'procesos@tracsa.com.mx'
 MAIL_SUPPRESS_SEND      = False
 
 # For template rendering
