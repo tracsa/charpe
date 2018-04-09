@@ -25,6 +25,7 @@ class EmailHandler(BaseHandler):
         template = self.jinja.get_template('{}.html'.format(name),
             globals = {
                 'config': self.config,
+                'pointer_id': kwargs['pointer']['id'],
             },
         )
 
@@ -32,6 +33,7 @@ class EmailHandler(BaseHandler):
 
     def publish(self, message):
         recipients = [message['email']]
+        pointer = message['pointer']
 
         subject = 'Tarea asignada'
 
@@ -41,7 +43,7 @@ class EmailHandler(BaseHandler):
             sender='procesos@tracsa.com.mx',
         )
 
-        msg.html = self.render_template('cacahuate')
+        msg.html = self.render_template('cacahuate', pointer=pointer)
 
         self.mail.send(msg)
 
