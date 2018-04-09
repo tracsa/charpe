@@ -7,19 +7,7 @@ from .. import mail
 from ..template_filters import datetimeformat, diffinhours
 
 SUBJECTS = {
-    'alarm': Template('[Fleety] Alarma tipo {{ type }} para {{ device.name }}'),
-    'geofence-enter': Template('[Fleety] {{ device.name }} entró a {{ geofence.name }}'),
-    'geofence-leave': Template('[Fleety] {{ device.name }} salió de {{ geofence.name }}'),
-    'trip-started': Template('[Fleety] {{ device.name }} inició viaje desde {{ trip.origin }} hasta {{ trip.destination }}'),
-    'trip-finished': Template('[Fleety] {{ device.name }} terminó viaje desde {{ trip.origin }} hasta {{ trip.destination }}'),
-    'trip-stop': Template('[Fleety] {{ device.name }} se detivo durante el viaje'),
-    'trip-offroute': Template('[Fleety] {{ device.name }} se salió de la ruta planeada'),
-    'user-registered': Template('[Fleety] Bienvenido a Fleety'),
     'report-finished': Template('[Fleety] Tu reporte {% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %} está listo'),
-
-    'server-error': Template('[Fleety] Server error'),
-
-    'demo-event': Template('Evento demo'),
 }
 
 class EmailHandler(BaseHandler):
@@ -43,26 +31,13 @@ class EmailHandler(BaseHandler):
         return template.render(**kwargs)
 
     def publish(self, message):
-        if message['event'] not in SUBJECTS:
-            return logging.error('Subject for event {} not defined, email will not be sent'.format(message['event']))
+        recipients = [message['email']]
 
-        def build_recipient(user):
-            return '{} {} <{}>'.format(
-                user['name'],
-                user['last_name'] if user['last_name'] else '',
-                user['email'],
-            )
-
-        recipients = list(map(
-            build_recipient,
-            message['users']
-        ))
-
-        subject = SUBJECTS[message['event']].render(**message['data'])
+        subject = 'Tarea asignada'
 
         msg = mail.Message(
-            subject = subject,
-            bcc = recipients,
+            subject=subject,
+            recipients=recipients,
         )
 
         msg.html = self.render_template(message['event'], **message['data'])

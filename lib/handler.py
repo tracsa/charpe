@@ -15,17 +15,13 @@ class Handler:
 
     # ...than this one, so no conexion can be shared between the two
     def __call__(self, channel, method, properties, body:bytes):
-        parsed_event = self.parse_event(event)
+        parsed_event = self.parse_event(body)
 
         if parsed_event is None:
             return
 
-        # skip some configured events in the log
-        if parsed_event['event'] not in self.config['DO_NOT_LOG']:
-            self.get_handler('Log').publish(parsed_event)
-
-        for sub in self.get_subscribers(parsed_event):
-            self.get_handler(sub['handler']).publish(sub)
+        # for sub in self.get_subscribers(parsed_event):
+        self.get_handler('Email').publish(parsed_event)
 
     def get_subscribers(self, event):
         ''' Reads and groups subscriptions to an event '''
@@ -62,38 +58,14 @@ class Handler:
 
         return self.handlers[name]
 
-    def parse_event(self, event):
-        if event['type'] != 'pmessage':
-            # it's not even a message... discard
-            return
-
-        data = event['data']
-
+    def parse_event(self, payload):
         try:
-            data = json.loads(data)
+            data = json.loads(payload)
         except json.decoder.JSONDecodeError as e:
             log.warning('Couldn\'t decode event\'s JSON data:')
-            log.warning(event)
             return
 
-        if 'event' not in data:
-            log.warning('Received event without event field')
-            log.warning(event)
-            return
-
-        if 'data' not in data:
-            log.warning('Received event without data field')
-            log.warning(event)
-            return
-
-        channel = event['channel']
-
-        return {
-            'data': data['data'],
-            'event': data['event'],
-            'channel': channel,
-            'org': channel.split(':')[0],
-        }
+        return data
 
     def bind_models(self):
         ''' bind the models to an engine, and set the prefix function '''

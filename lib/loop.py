@@ -25,16 +25,25 @@ class Loop:
         ))
         channel = connection.channel()
 
-        channel.queue_declare(
-            queue = self.config['RABBIT_QUEUE'],
-            durable = True,
+        channel.exchange_declare(
+            exchange=self.config['RABBIT_NOTIFY_EXCHANGE'],
+            exchange_type='direct'
+        )
+
+        result = channel.queue_declare(exclusive=True)
+        queue_name = result.method.queue
+
+        channel.queue_bind(
+            exchange=self.config['RABBIT_NOTIFY_EXCHANGE'],
+            queue=queue_name,
+            routing_key='email',
         )
 
         channel.basic_consume(
             self.handler,
-            queue = self.config['RABBIT_QUEUE'],
+            queue=queue_name,
             consumer_tag = self.config['RABBIT_CONSUMER_TAG'],
-            no_ack = self.config['RABBIT_NO_ACK'],
+            no_ack=True
         )
 
         try:
