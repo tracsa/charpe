@@ -1,5 +1,7 @@
 import logging
 
+WORKERS = 2
+
 # Rabbitmq
 RABBIT_HOST = 'localhost'
 RABBIT_NOTIFY_EXCHANGE = 'cacahuate_notify'
