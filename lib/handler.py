@@ -2,7 +2,6 @@ from .logger import log
 import simplejson as json
 from importlib import import_module
 from .models import Subscription, User
-from coralillo import Engine
 
 
 class Handler:
@@ -10,7 +9,6 @@ class Handler:
     # this function runs in a different process...
     def __init__(self, config):
         self.config = config.copy()
-        self.engine = None
         self.handlers = dict()
 
     # ...than this one, so no conexion can be shared between the two
@@ -26,9 +24,6 @@ class Handler:
     def get_subscribers(self, event):
         ''' Reads and groups subscriptions to an event '''
         channel  = event['channel']
-
-        # We need to bind the models to the engine and add prefix function
-        self.bind_models()
 
         def filter_events(sub):
             return sub.event == '*' or sub.event == event['event']
@@ -66,15 +61,3 @@ class Handler:
             return
 
         return data
-
-    def bind_models(self):
-        ''' bind the models to an engine, and set the prefix function '''
-        if self.engine is None:
-            self.engine = Engine(
-                host = self.config['REDIS_HOST'],
-                port = self.config['REDIS_PORT'],
-                db = self.config['REDIS_DB'],
-            )
-
-            Subscription.set_engine(self.engine)
-            User.set_engine(self.engine)
