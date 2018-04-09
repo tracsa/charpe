@@ -45,4 +45,4 @@ class EmailHandler(BaseHandler):
 
         self.mail.send(msg)
 
-        logging.info('Email sent')
+        logging.info('Email sent to {}'.format(message['email']))
