@@ -5,3 +5,4 @@ requests==2.18.4
 pika==0.11.2
 itacate==1.0.3
 pytz
+coralillo==0.7.0
