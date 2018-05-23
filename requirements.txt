@@ -1,8 +1,4 @@
-blinker==1.4
-jinja2==2.9.6
-simplejson==3.11.1
-requests==2.18.4
-pika==0.11.2
-itacate==1.0.3
-pytz
-coralillo==0.7.0
+pytest
+pytest-mock
+pycodestyle
+-e .
