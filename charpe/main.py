@@ -8,7 +8,7 @@ def main():
     # Load the config
     config = Config(os.path.dirname(os.path.realpath(__file__)))
     config.from_pyfile('settings.py')
-    config.from_envvar('CACAHUATE_NOTIFICATOIN_SETTINGS', silent=False)
+    config.from_envvar('CHARPE_SETTINGS', silent=False)
 
     # Set the timezone
     os.environ['TZ'] = config['TIMEZONE']
