@@ -20,12 +20,12 @@ class Handler:
         if parsed_event is None:
             return
 
-        self.get_handler('Email').publish(parsed_event)
+        self.get_medium('Email').publish(parsed_event)
 
-    def get_handler(self, name):
+    def get_medium(self, name):
         if name not in self.handlers:
             module = import_module(
-                '.handlers.{}_handler'.format(name.lower()), 'lib'
+                'charpe.mediums.{}_handler'.format(name.lower()),
             )
             self.handlers[name] = getattr(module, name+'Handler')(self.config)
 

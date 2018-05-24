@@ -2,9 +2,9 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 import os
 import logging
 
-from . import BaseHandler
-from .. import mail
-from ..template_filters import datetimeformat, diffinhours
+from charpe.mediums import BaseMedium
+from charpe import mail
+from charpe.template_filters import datetimeformat, diffinhours
 
 SUBJECTS = {
     'subject': Template('---'),
@@ -13,7 +13,7 @@ SUBJECTS = {
 LOGGER = logging.getLogger(__name__)
 
 
-class EmailHandler(BaseHandler):
+class EmailHandler(BaseMedium):
 
     def initialize(self):
         self.jinja = Environment(

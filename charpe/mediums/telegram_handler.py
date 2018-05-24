@@ -2,7 +2,7 @@ from jinja2 import Template
 import logging
 import requests
 
-from . import BaseHandler
+from charpe.mediums import BaseMedium
 
 LOGGER = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ TEMPLATES = {
 }
 
 
-class TelegramHandler(BaseHandler):
+class TelegramHandler(BaseMedium):
 
     def publish(self, message):
         if message['event'] not in TEMPLATES:
