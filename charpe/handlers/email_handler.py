@@ -10,6 +10,9 @@ SUBJECTS = {
     'report-finished': Template('[Fleety] Tu reporte {% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %} está listo'),
 }
 
+LOGGER = logging.getLogger(__name__)
+
+
 class EmailHandler(BaseHandler):
 
     def initialize(self):
@@ -47,4 +50,4 @@ class EmailHandler(BaseHandler):
 
         self.mail.send(msg)
 
-        logging.info('Email sent to {}'.format(message['email']))
+        LOGGER.info('Email sent to {}'.format(message['email']))

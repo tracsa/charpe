@@ -4,6 +4,8 @@ import psycopg2
 import simplejson as json
 from datetime import datetime
 
+LOGGER = logging.getLogger(__name__)
+
 
 class LogHandler(BaseHandler):
 
@@ -32,4 +34,4 @@ class LogHandler(BaseHandler):
         cur.close()
         conn.close()
 
-        logging.debug('[{}] Logged {} to database'.format(channel, event))
+        LOGGER.debug('[{}] Logged {} to database'.format(channel, event))

@@ -1,6 +1,9 @@
-from .logger import log
-import simplejson as json
 from importlib import import_module
+import logging
+import simplejson as json
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Handler:
@@ -30,7 +33,7 @@ class Handler:
         try:
             data = json.loads(payload)
         except json.decoder.JSONDecodeError as e:
-            log.warning('Couldn\'t decode event\'s JSON data:')
+            LOGGER.warning('Couldn\'t decode event\'s JSON data:')
             return
 
         return data

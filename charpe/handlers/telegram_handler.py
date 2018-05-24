@@ -4,6 +4,8 @@ import requests
 
 from . import BaseHandler
 
+LOGGER = logging.getLogger(__name__)
+
 TEMPLATES = {
     'alarm': Template('⚠️ #Alarma tipo #{{ type }} para el dispositivo [{{ device.name }}]({{ URL_PROTOCOL }}://{{ org_name }}.getfleety.{{ URL_SUBDOMAIN }}/#/device/{{ device.id }}) ⚠️'),
     'geofence-enter': Template('⭕️ ⬅️ 🚲 El dispositivo {{ device.name }} #entróAGeocerca {{ geofence.name }}'),
@@ -11,11 +13,12 @@ TEMPLATES = {
     'report-finished': Template('📈 Tu reporte *{% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %}* está listo, descárgalo [aqui]({{ report.url }}).'),
 }
 
+
 class TelegramHandler(BaseHandler):
 
     def publish(self, message):
         if message['event'] not in TEMPLATES:
-            return logging.error('Template for event {} not defined, telegram message will not be sent'.format(message['event']))
+            return LOGGER.error('Template for event {} not defined, telegram message will not be sent'.format(message['event']))
 
         for user in message['users']:
             if not user['telegram_chat_id']:
@@ -36,4 +39,4 @@ class TelegramHandler(BaseHandler):
                     'longitude': message['data']['device']['last_pos']['lon'],
                 })
 
-        logging.info('Telegram message for event {} sent'.format(message['event']))
+        LOGGER.info('Telegram message for event {} sent'.format(message['event']))

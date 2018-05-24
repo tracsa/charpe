@@ -2,3 +2,5 @@ __pycache__/
 .env/
 settings_*.py
 *.pyc
+.eggs/
+*.egg-info/

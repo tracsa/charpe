@@ -1,10 +1,10 @@
-from lib.logger import log
-from lib.loop import Loop
+from charpe.loop import Loop
 from itacate import Config
 import time
 import os
 
-if __name__ == '__main__':
+
+def main():
     # Load the config
     config = Config(os.path.dirname(os.path.realpath(__file__)))
     config.from_pyfile('settings.py')
@@ -18,10 +18,14 @@ if __name__ == '__main__':
     import logging
 
     logging.basicConfig(
-        format = '[%(levelname)s] %(message)s - %(filename)s:%(lineno)s',
+        format = '[%(levelname)s] %(message)s - %(name)s:%(lineno)s',
         level  = config['LOG_LEVEL'],
     )
 
     # Run the event loop
     loop = Loop(config)
     loop.start()
+
+
+if __name__ == '__main__':
+    main()

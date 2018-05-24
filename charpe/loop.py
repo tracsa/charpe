@@ -1,8 +1,11 @@
-from .logger import log
-from .handler import Handler
 from multiprocessing import Pool
 import signal
 import pika
+import logging
+
+from charpe.handler import Handler
+
+LOGGER = logging.getLogger(__name__)
 
 # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-pool#1408476
 
@@ -17,7 +20,7 @@ class Loop:
         self.config = config
         self.handler = Handler(config)
 
-        log.info('Initialized loop')
+        LOGGER.info('Initialized loop')
 
     def start(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(
@@ -49,4 +52,4 @@ class Loop:
         try:
             channel.start_consuming()
         except KeyboardInterrupt:
-            log.info('PVM stopped')
+            LOGGER.info('PVM stopped')
