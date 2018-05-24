@@ -7,7 +7,7 @@ from .. import mail
 from ..template_filters import datetimeformat, diffinhours
 
 SUBJECTS = {
-    'report-finished': Template('[Fleety] Tu reporte {% if report.name %}{{ report.name }}{% else %}{{ report.builder }}{% endif %} está listo'),
+    'subject': Template('---'),
 }
 
 LOGGER = logging.getLogger(__name__)
@@ -17,16 +17,19 @@ class EmailHandler(BaseHandler):
 
     def initialize(self):
         self.jinja = Environment(
-            loader = FileSystemLoader(os.path.join(os.path.dirname(__name__), 'templates')),
-            autoescape = select_autoescape(['html']),
+            loader=FileSystemLoader(
+                os.path.join(os.path.dirname(__name__), 'templates')
+            ),
+            autoescape=select_autoescape(['html']),
         )
         self.jinja.filters['datetimeformat'] = datetimeformat
         self.jinja.filters['diffinhours'] = diffinhours
         self.mail = mail.Mail(self.config)
 
     def render_template(self, name, **kwargs):
-        template = self.jinja.get_template('{}.html'.format(name),
-            globals = {
+        template = self.jinja.get_template(
+            '{}.html'.format(name),
+            globals={
                 'config': self.config,
                 'pointer_id': kwargs['pointer']['id'],
             },

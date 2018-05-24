@@ -23,7 +23,9 @@ class FlaskMailUnicodeDecodeError(UnicodeDecodeError):
 
     def __str__(self):
         original = UnicodeDecodeError.__str__(self)
-        return '%s. You passed in %r (%s)' % (original, self.obj, type(self.obj))
+        return '%s. You passed in %r (%s)' % (
+            original, self.obj, type(self.obj)
+        )
 
 
 def force_text(s, encoding='utf-8', errors='strict'):
@@ -48,9 +50,12 @@ def force_text(s, encoding='utf-8', errors='strict'):
         if not isinstance(s, Exception):
             raise FlaskMailUnicodeDecodeError(s, *e.args)
         else:
-            s = ' '.join([force_text(arg, encoding, strings_only,
-                    errors) for arg in s])
+            s = ' '.join([
+                force_text(arg, encoding, strings_only, errors)
+                for arg in s
+            ])
     return s
+
 
 def sanitize_subject(subject, encoding='utf-8'):
     try:
@@ -61,6 +66,7 @@ def sanitize_subject(subject, encoding='utf-8'):
         except UnicodeEncodeError:
             subject = Header(subject, 'utf-8').encode()
     return subject
+
 
 def sanitize_address(addr, encoding='utf-8'):
     if isinstance(addr, str):
@@ -93,6 +99,7 @@ def _has_newline(line):
     if line and ('\r' in line or '\n' in line):
         return True
     return False
+
 
 class Connection:
     """Handles connection to host."""
@@ -148,11 +155,13 @@ class Connection:
             message.date = time.time()
 
         if self.host:
-            self.host.sendmail(sanitize_address(envelope_from or message.sender),
-                               list(sanitize_addresses(message.send_to)),
-                               message.as_bytes(),
-                               message.mail_options,
-                               message.rcpt_options)
+            self.host.sendmail(
+                sanitize_address(envelope_from or message.sender),
+                list(sanitize_addresses(message.send_to)),
+                message.as_bytes(),
+                message.mail_options,
+                message.rcpt_options
+            )
 
         email_dispatched.send(message)
 
@@ -206,7 +215,8 @@ class Message(object):
     :param recipients: list of email addresses
     :param body: plain text message
     :param html: HTML message
-    :param alts: A dict or an iterable to go through dict() that contains multipart alternatives
+    :param alts: A dict or an iterable to go through dict() that contains
+           multipart alternatives
     :param sender: email sender address, or **MAIL_DEFAULT_SENDER** by default
     :param cc: CC list
     :param bcc: BCC list
@@ -215,7 +225,8 @@ class Message(object):
     :param date: send date
     :param charset: message character set
     :param extra_headers: A dictionary of additional headers for the message
-    :param mail_options: A list of ESMTP options to be used in MAIL FROM command
+    :param mail_options: A list of ESMTP options to be used in MAIL FROM
+           command
     :param rcpt_options:  A list of ESMTP options to be used in RCPT commands
     """
 
@@ -300,17 +311,23 @@ class Message(object):
             msg.attach(alternative)
 
         if self.subject:
-            msg['Subject'] = sanitize_subject(force_text(self.subject), encoding)
+            msg['Subject'] = sanitize_subject(
+                force_text(self.subject), encoding
+            )
 
         msg['From'] = sanitize_address(self.sender, encoding)
-        msg['To'] = ', '.join(list(set(sanitize_addresses(self.recipients, encoding))))
+        msg['To'] = ', '.join(
+            list(set(sanitize_addresses(self.recipients, encoding)))
+        )
 
         msg['Date'] = formatdate(self.date, localtime=True)
         # see RFC 5322 section 3.6.4.
         msg['Message-ID'] = self.msgId
 
         if self.cc:
-            msg['Cc'] = ', '.join(list(set(sanitize_addresses(self.cc, encoding))))
+            msg['Cc'] = ', '.join(
+                list(set(sanitize_addresses(self.cc, encoding)))
+            )
 
         if self.reply_to:
             msg['Reply-To'] = sanitize_address(self.reply_to, encoding)
@@ -363,9 +380,9 @@ class Message(object):
         return self.as_bytes()
 
     def has_bad_headers(self):
-        """Checks for bad headers i.e. newlines in subject, sender or recipients.
-        RFC5322: Allows multiline CRLF with trailing whitespace (FWS) in headers
-        """
+        """Checks for bad headers i.e. newlines in subject, sender or
+        recipients. RFC5322: Allows multiline CRLF with trailing whitespace
+        (FWS) in headers """
 
         headers = [self.sender, self.reply_to] + self.recipients
         for header in headers:
@@ -387,7 +404,8 @@ class Message(object):
 
     def is_bad_headers(self):
         from warnings import warn
-        msg = 'is_bad_headers is deprecated, use the new has_bad_headers method instead.'
+        msg = 'is_bad_headers is deprecated, use the new has_bad_headers \
+                method instead.'
         warn(DeprecationWarning(msg), stacklevel=1)
         return self.has_bad_headers()
 
@@ -424,16 +442,16 @@ class Message(object):
 class Mail:
 
     def __init__(self, config):
-        self.server            = config.get('MAIL_SERVER', '127.0.0.1')
-        self.username          = config.get('MAIL_USERNAME')
-        self.password          = config.get('MAIL_PASSWORD')
-        self.port              = config.get('MAIL_PORT', 25)
-        self.use_tls           = config.get('MAIL_USE_TLS', False)
-        self.use_ssl           = config.get('MAIL_USE_SSL', False)
-        self.default_sender    = config.get('MAIL_DEFAULT_SENDER')
-        self.debug             = int(config.get('MAIL_DEBUG', 0))
-        self.max_emails        = config.get('MAIL_MAX_EMAILS')
-        self.suppress          = config.get('MAIL_SUPPRESS_SEND', False)
+        self.server = config.get('MAIL_SERVER', '127.0.0.1')
+        self.username = config.get('MAIL_USERNAME')
+        self.password = config.get('MAIL_PASSWORD')
+        self.port = config.get('MAIL_PORT', 25)
+        self.use_tls = config.get('MAIL_USE_TLS', False)
+        self.use_ssl = config.get('MAIL_USE_SSL', False)
+        self.default_sender = config.get('MAIL_DEFAULT_SENDER')
+        self.debug = int(config.get('MAIL_DEBUG', 0))
+        self.max_emails = config.get('MAIL_MAX_EMAILS')
+        self.suppress = config.get('MAIL_SUPPRESS_SEND', False)
 
     @contextmanager
     def record_messages(self):

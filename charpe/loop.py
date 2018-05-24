@@ -9,6 +9,7 @@ LOGGER = logging.getLogger(__name__)
 
 # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-pool#1408476
 
+
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
@@ -24,7 +25,7 @@ class Loop:
 
     def start(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(
-            host = self.config['RABBIT_HOST'],
+            host=self.config['RABBIT_HOST'],
         ))
         channel = connection.channel()
 
@@ -45,7 +46,7 @@ class Loop:
         channel.basic_consume(
             self.handler,
             queue=queue_name,
-            consumer_tag = self.config['RABBIT_CONSUMER_TAG'],
+            consumer_tag=self.config['RABBIT_CONSUMER_TAG'],
             no_ack=True
         )
 

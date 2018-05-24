@@ -14,7 +14,7 @@ class Handler:
         self.handlers = dict()
 
     # ...than this one, so no conexion can be shared between the two
-    def __call__(self, channel, method, properties, body:bytes):
+    def __call__(self, channel, method, properties, body: bytes):
         parsed_event = self.parse_event(body)
 
         if parsed_event is None:
@@ -24,7 +24,9 @@ class Handler:
 
     def get_handler(self, name):
         if name not in self.handlers:
-            module = import_module('.handlers.{}_handler'.format(name.lower()), 'lib')
+            module = import_module(
+                '.handlers.{}_handler'.format(name.lower()), 'lib'
+            )
             self.handlers[name] = getattr(module, name+'Handler')(self.config)
 
         return self.handlers[name]

@@ -15,14 +15,14 @@ LOG_LEVEL = logging.INFO
 TIMEZONE = 'UTC'
 
 # Needed to send mails
-MAIL_SERVER             = 'smtp.mailgun.org'
-MAIL_PORT               = '587'
-MAIL_USE_TLS            = True
-MAIL_USE_SSL            = False
-MAIL_USERNAME           = ''
-MAIL_PASSWORD           = ''
-MAIL_DEFAULT_SENDER     = 'procesos@tracsa.com.mx'
-MAIL_SUPPRESS_SEND      = False
+MAIL_SERVER = 'smtp.mailgun.org'
+MAIL_PORT = '587'
+MAIL_USE_TLS = True
+MAIL_USE_SSL = False
+MAIL_USERNAME = ''
+MAIL_PASSWORD = ''
+MAIL_DEFAULT_SENDER = 'procesos@tracsa.com.mx'
+MAIL_SUPPRESS_SEND = False
 
 # For template rendering
 URL_PROTOCOL = 'https'

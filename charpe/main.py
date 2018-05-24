@@ -18,8 +18,8 @@ def main():
     import logging
 
     logging.basicConfig(
-        format = '[%(levelname)s] %(message)s - %(name)s:%(lineno)s',
-        level  = config['LOG_LEVEL'],
+        format='[%(levelname)s] %(message)s - %(name)s:%(lineno)s',
+        level=config['LOG_LEVEL'],
     )
 
     # Run the event loop
