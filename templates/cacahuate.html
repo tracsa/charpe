@@ -7,6 +7,9 @@
 {% block body_content %}
   <p>Se te ha asignado una nueva tarea en flujos de autorización.</p>
   <br />
+  <p style="font-weight: bold">{{pointer.name}}</p>
+  <p>{{pointer.description}}</p>
+  <br />
   <p>Para completarla visitar la siguiente liga:</p>
   <h3><a href="https://procesos.tracsa.com.mx/#/task/{{ pointer.id }}">Completar tarea</a></h3>
 {% endblock %}
