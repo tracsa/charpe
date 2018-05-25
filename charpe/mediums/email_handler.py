@@ -49,7 +49,7 @@ class EmailHandler(BaseMedium):
             sender='procesos@tracsa.com.mx',
         )
 
-        msg.html = self.render_template('cacahuate', pointer=pointer)
+        msg.html = self.render_template('charpe', pointer=pointer)
 
         self.mail.send(msg)
 

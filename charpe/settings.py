@@ -4,9 +4,10 @@ WORKERS = 2
 
 # Rabbitmq
 RABBIT_HOST = 'localhost'
-RABBIT_NOTIFY_EXCHANGE = 'cacahuate_notify'
-RABBIT_CONSUMER_TAG = 'cacahuate_notifier_consumer_1'
+RABBIT_NOTIFY_EXCHANGE = 'charpe_notify'
+RABBIT_CONSUMER_TAG = 'charpe_notifier_consumer_1'
 RABBIT_NO_ACK = True
+RABBIT_QUEUE = 'charpe_queue'
 
 # Log configuration
 LOG_LEVEL = logging.INFO
@@ -21,7 +22,7 @@ MAIL_USE_TLS = True
 MAIL_USE_SSL = False
 MAIL_USERNAME = ''
 MAIL_PASSWORD = ''
-MAIL_DEFAULT_SENDER = 'procesos@tracsa.com.mx'
+MAIL_DEFAULT_SENDER = 'charpe@example.com'
 MAIL_SUPPRESS_SEND = False
 
 # For template rendering

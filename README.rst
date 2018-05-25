@@ -1,8 +1,8 @@
 Charpe
 ======
 
-.. image:: https://travis-ci.org/tracsa/cacahuate.svg?branch=master
-   :target: https://travis-ci.org/tracsa/cacahuate
+.. image:: https://travis-ci.org/tracsa/charpe.svg?branch=master
+   :target: https://travis-ci.org/tracsa/charpe
    :alt: Build Status
 
 **Distributes messages using different media**
