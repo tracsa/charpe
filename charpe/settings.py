@@ -15,6 +15,9 @@ LOG_LEVEL = logging.INFO
 # Time settings
 TIMEZONE = 'UTC'
 
+# Which available mediums we have
+MEDIUMS = ['email', 'telegram']
+
 # Needed to send mails
 MAIL_SERVER = 'smtp.mailgun.org'
 MAIL_PORT = '587'

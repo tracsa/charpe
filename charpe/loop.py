@@ -26,15 +26,22 @@ class Loop:
             exchange=self.config['RABBIT_NOTIFY_EXCHANGE'],
             exchange_type='direct'
         )
+        LOGGER.debug('Connected to queue {}'.format(
+            self.config['RABBIT_NOTIFY_EXCHANGE']
+        ))
 
-        result = channel.queue_declare(exclusive=True)
-        queue_name = result.method.queue
-
-        channel.queue_bind(
-            exchange=self.config['RABBIT_NOTIFY_EXCHANGE'],
+        queue_name = self.config['RABBIT_QUEUE']
+        result = channel.queue_declare(
             queue=queue_name,
-            routing_key='email',
+            durable=True,
         )
+
+        for medium in self.config['MEDIUMS']:
+            channel.queue_bind(
+                exchange=self.config['RABBIT_NOTIFY_EXCHANGE'],
+                queue=queue_name,
+                routing_key=medium,
+            )
 
         channel.basic_consume(
             self.handler,
