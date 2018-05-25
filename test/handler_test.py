@@ -26,7 +26,8 @@ def test_call_couldnt_import_medium(config, caplog):
 
     rec = caplog.records[0]
     assert rec.levelname == 'ERROR'
-    assert 'Could not import provider module charpe.mediums.foo_handler' in caplog.text
+    assert 'Could not import provider module charpe.mediums.foo_handler' in \
+        caplog.text
 
 
 def test_call_email_insuficient_info(config, caplog):
