@@ -5,6 +5,7 @@ import logging
 from charpe.mediums import BaseMedium
 from charpe import mail
 from charpe.template_filters import datetimeformat, diffinhours
+from charpe.errors import InsuficientInformation
 
 SUBJECTS = {
     'subject': Template('---'),
@@ -38,8 +39,11 @@ class EmailHandler(BaseMedium):
         return template.render(**kwargs)
 
     def publish(self, message):
-        recipients = [message['email']]
-        pointer = message['pointer']
+        try:
+            recipient = message['email']
+            pointer = message['pointer']
+        except KeyError as e:
+            raise InsuficientInformation('Needed key {}'.format(str(e)))
 
         subject = 'Tarea asignada'
 

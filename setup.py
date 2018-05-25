@@ -56,6 +56,7 @@ setup(
         'pika',
         'itacate',
         'pytz',
+        'case_conversion',
     ],
 
     setup_requires=[
