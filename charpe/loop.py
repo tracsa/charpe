@@ -26,7 +26,7 @@ class Loop:
             exchange=self.config['RABBIT_NOTIFY_EXCHANGE'],
             exchange_type='direct'
         )
-        LOGGER.debug('Connected to queue {}'.format(
+        LOGGER.info('Declared exchange {}'.format(
             self.config['RABBIT_NOTIFY_EXCHANGE']
         ))
 
@@ -35,6 +35,9 @@ class Loop:
             queue=queue_name,
             durable=True,
         )
+        LOGGER.info('Declared queue {}'.format(
+            queue_name
+        ))
 
         for medium in self.config['MEDIUMS']:
             channel.queue_bind(
@@ -42,6 +45,9 @@ class Loop:
                 queue=queue_name,
                 routing_key=medium,
             )
+            LOGGER.info('Bound queue with routing key: {}'.format(
+                medium,
+            ))
 
         channel.basic_consume(
             self.handler,
