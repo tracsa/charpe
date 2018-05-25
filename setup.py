@@ -38,7 +38,7 @@ setup(
         'charpe',
     ],
 
-    package_data={'charpe': ['grammars/*.g']},
+    package_data={'charpe': ['templates/**']},
 
     entry_points={
         'console_scripts': [
