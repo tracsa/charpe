@@ -1,10 +1,6 @@
 from charpe.handler import Handler
 
-
-class MockMethod:
-
-    def __init__(self, medium):
-        self.routing_key = medium
+from .utils import MockMethod
 
 
 def test_call_bad_message(config, caplog):
@@ -38,4 +34,4 @@ def test_call_email_insuficient_info(config, caplog):
 
     rec = caplog.records[0]
     assert rec.levelname == 'ERROR'
-    assert 'Needed key \'email\'' in caplog.text
+    assert 'Needed key \'recipient\'' in caplog.text

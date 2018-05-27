@@ -32,6 +32,8 @@ class Handler:
             return LOGGER.error(str(e))
         except InsuficientInformation as e:
             return LOGGER.error(str(e))
+        except MediumError as e:
+            return LOGGER.error(str(e))
 
     def get_medium(self, name):
         if name not in self.handlers:

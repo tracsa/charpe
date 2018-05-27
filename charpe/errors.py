@@ -4,3 +4,7 @@ class InsuficientInformation(Exception):
 
 class MisconfiguredProvider(Exception):
     pass
+
+
+class MediumError(Exception):
+    pass
