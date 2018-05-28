@@ -6,7 +6,6 @@ import os
 import smtplib
 
 from charpe.mediums import BaseMedium
-from charpe import mail
 from charpe.template_filters import datetimeformat, diffinhours
 from charpe.errors import InsuficientInformation, MediumError
 
@@ -63,8 +62,19 @@ class EmailHandler(BaseMedium):
         msg['From'] = sender
         msg['To'] = recipient
 
-        smtp = smtplib.SMTP(self.config['MAIL_SERVER'])
-        smtp.send_message(msg)
-        smtp.quit()
+        if self.config['MAIL_USE_SSL']:
+            host = smtplib.SMTP_SSL(self.config['MAIL_SERVER'], self.config['MAIL_PORT'])
+        else:
+            host = smtplib.SMTP(self.config['MAIL_SERVER'], self.config['MAIL_PORT'])
+
+        host.set_debuglevel(1)
+
+        if self.config['MAIL_USE_TLS']:
+            host.starttls()
+
+        if self.config['MAIL_USERNAME'] and self.config['MAIL_PASSWORD']:
+            host.login(self.config['MAIL_USERNAME'], self.config['MAIL_PASSWORD'])
+
+        host.send_message(msg)
 
         LOGGER.info('Email sent to {}'.format(recipient))
