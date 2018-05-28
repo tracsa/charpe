@@ -63,9 +63,15 @@ class EmailHandler(BaseMedium):
         msg['To'] = recipient
 
         if self.config['MAIL_USE_SSL']:
-            host = smtplib.SMTP_SSL(self.config['MAIL_SERVER'], self.config['MAIL_PORT'])
+            host = smtplib.SMTP_SSL(
+                self.config['MAIL_SERVER'],
+                self.config['MAIL_PORT'],
+            )
         else:
-            host = smtplib.SMTP(self.config['MAIL_SERVER'], self.config['MAIL_PORT'])
+            host = smtplib.SMTP(
+                self.config['MAIL_SERVER'],
+                self.config['MAIL_PORT'],
+            )
 
         host.set_debuglevel(1)
 
@@ -73,7 +79,10 @@ class EmailHandler(BaseMedium):
             host.starttls()
 
         if self.config['MAIL_USERNAME'] and self.config['MAIL_PASSWORD']:
-            host.login(self.config['MAIL_USERNAME'], self.config['MAIL_PASSWORD'])
+            host.login(
+                self.config['MAIL_USERNAME'],
+                self.config['MAIL_PASSWORD'],
+            )
 
         host.send_message(msg)
         host.quit()
