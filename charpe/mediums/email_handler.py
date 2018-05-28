@@ -76,5 +76,6 @@ class EmailHandler(BaseMedium):
             host.login(self.config['MAIL_USERNAME'], self.config['MAIL_PASSWORD'])
 
         host.send_message(msg)
+        host.quit()
 
         LOGGER.info('Email sent to {}'.format(recipient))
