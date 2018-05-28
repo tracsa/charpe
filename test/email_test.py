@@ -47,6 +47,10 @@ def test_send(config, caplog, mocker):
 
     assert msg.get('From') == config['MAIL_DEFAULT_SENDER']
     assert msg.get('To') == 'charpe@mailinator.com'
-    assert 'El mensaje' in msg.get_content()
+
+    html, text = msg.get_payload()
+
+    assert 'El mensaje' in text.get_payload()
+    assert '<strong>El mensaje</strong>' in html.get_payload()
 
     the_mock.quit.assert_called_once()
