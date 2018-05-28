@@ -51,6 +51,6 @@ def test_send(config, caplog, mocker):
     html, text = msg.get_payload()
 
     assert 'El mensaje' in text.get_payload()
-    assert '<strong>El mensaje</strong>' in html.get_payload()
+    assert '<p>El mensaje</p>' in html.get_payload()
 
     the_mock.quit.assert_called_once()
