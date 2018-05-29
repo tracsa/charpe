@@ -2,7 +2,7 @@ from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from html.parser import HTMLParser
-from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from jinja2.exceptions import TemplateNotFound
 import logging
 import os
@@ -11,10 +11,6 @@ import smtplib
 from charpe.mediums import BaseMedium
 from charpe.template_filters import datetimeformat, diffinhours
 from charpe.errors import InsuficientInformation, MediumError
-
-SUBJECTS = {
-    'subject': Template('---'),
-}
 
 LOGGER = logging.getLogger(__name__)
 
@@ -47,22 +43,12 @@ class EmailHandler(BaseMedium):
         self.jinja.filters['datetimeformat'] = datetimeformat
         self.jinja.filters['diffinhours'] = diffinhours
 
-    def render_template(self, name, **kwargs):
-        template = self.jinja.get_template(
-            '{}.html'.format(name),
-            globals={
-                'config': self.config,
-            },
-        )
-
-        return template.render(**kwargs)
-
     def publish(self, message):
         try:
             recipient = message['recipient']
             subject = message['subject']
             sender = message.get('sender', self.config['MAIL_DEFAULT_SENDER'])
-            template = message.get('template', 'basic')
+            template = message.get('template', 'basic.html')
             data = message['data']
         except KeyError as e:
             raise InsuficientInformation('Needed key {}'.format(str(e)))

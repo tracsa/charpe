@@ -1,4 +1,4 @@
-from jinja2 import Template
+from jinja2 import Environment, DictLoader
 import logging
 import requests
 
@@ -6,39 +6,47 @@ from charpe.mediums import BaseMedium
 
 LOGGER = logging.getLogger(__name__)
 
-TEMPLATES = {
-    'server-error': Template('--'),
-}
-
 
 class TelegramHandler(BaseMedium):
 
+    def initialize(self):
+        self.jinja = Environment(
+            loader=DictLoader({
+                'basic': '{{ content }}',
+                'server-error': '⚠️ #{{ service_name }} ⚠️\n```{{ traceback }}```',
+            }),
+        )
+
     def publish(self, message):
-        if message['event'] not in TEMPLATES:
-            return LOGGER.error(
-                'Template for event {} not defined, telegram'
-                'message will not be sent'.format(
-                    message['event']
-                )
-            )
+        try:
+            template = message.get('template', 'basic')
+            chat_id = message['chat_id']
+            data = message['data']
+        except KeyError as e:
+            raise InsuficientInformation('Needed key {}'.format(str(e)))
 
-        for user in message['users']:
-            if not user['telegram_chat_id']:
-                continue
+        LOGGER.debug('Using template {}'.format(template))
 
-            msg = TEMPLATES[message['event']].render(**{
-                **message['data'],
-                **self.config
-            })
+        try:
+            rendered_template = self.render_template(template, **data)
+        except TemplateNotFound:
+            raise MediumError('Could not load jinja template: {}'.format(
+                template
+            ))
 
-            requests.post('https://api.telegram.org/bot{}/sendMessage'.format(
-                self.config['TELEGRAM_BOT_KEY']
-            ), data={
-                'chat_id': user['telegram_chat_id'],
-                'text': msg,
-                'parse_mode': 'Markdown',
-            })
+        LOGGER.debug('Content: {}'.format(rendered_template))
 
-        LOGGER.info('Telegram message for event {} sent'.format(
-            message['event']
+        res = requests.post('https://api.telegram.org/bot{}/sendMessage'.format(
+            self.config['TELEGRAM_BOT_KEY']
+        ), data={
+            'chat_id': chat_id,
+            'text': rendered_template,
+            'parse_mode': 'Markdown',
+        })
+
+        LOGGER.info('Sent message to telegram chat {}. Response: {}'.format(
+            chat_id,
+            res.status_code,
         ))
+
+        LOGGER.debug(res.text)
