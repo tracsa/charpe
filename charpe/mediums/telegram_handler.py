@@ -13,7 +13,8 @@ class TelegramHandler(BaseMedium):
         self.jinja = Environment(
             loader=DictLoader({
                 'basic': '{{ content }}',
-                'server-error': '⚠️ #{{ service_name }} ⚠️\n```{{ traceback }}```',
+                'server-error':
+                    '⚠️ #{{ service_name }} ⚠️\n```{{ traceback }}```',
             }),
         )
 
@@ -36,13 +37,14 @@ class TelegramHandler(BaseMedium):
 
         LOGGER.debug('Content: {}'.format(rendered_template))
 
-        res = requests.post('https://api.telegram.org/bot{}/sendMessage'.format(
-            self.config['TELEGRAM_BOT_KEY']
-        ), data={
-            'chat_id': chat_id,
-            'text': rendered_template,
-            'parse_mode': 'Markdown',
-        })
+        res = requests.post(
+            'https://api.telegram.org/bot{}/sendMessage'.format(
+                self.config['TELEGRAM_BOT_KEY']
+            ), data={
+                'chat_id': chat_id,
+                'text': rendered_template,
+                'parse_mode': 'Markdown',
+            })
 
         LOGGER.info('Sent message to telegram chat {}. Response: {}'.format(
             chat_id,
