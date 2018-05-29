@@ -86,7 +86,7 @@ class EmailHandler(BaseMedium):
                 self.config['MAIL_PORT'],
             )
 
-        host.set_debuglevel(1)
+        host.set_debuglevel(self.config['LOG_LEVEL'] == logging.DEBUG)
 
         if self.config['MAIL_USE_TLS']:
             host.starttls()
