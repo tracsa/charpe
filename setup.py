@@ -36,6 +36,7 @@ setup(
 
     packages=[
         'charpe',
+        'charpe.mediums',
     ],
 
     package_data={'charpe': ['templates/**']},
