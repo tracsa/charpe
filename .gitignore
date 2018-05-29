@@ -7,3 +7,4 @@ settings_*.py
 .pytest_cache/
 dist/
 build/
+.tox/
