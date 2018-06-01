@@ -8,17 +8,18 @@ class CharpeHandler(logging.Handler):
     def __init__(self, host, medium, exchange, params, service_name):
         super().__init__()
 
-        connection = pika.BlockingConnection(pika.ConnectionParameters(
-            host=host,
-        ))
-
+        self.host = host
         self.medium = medium
         self.exchange = exchange
         self.params = params
         self.service_name = service_name
-        self.channel = connection.channel()
 
     def emit(self, record):
+        connection = pika.BlockingConnection(pika.ConnectionParameters(
+            host=self.host,
+        ))
+        channel = connection.channel()
+
         try:
             traceback = self.format(record)
 
@@ -28,7 +29,7 @@ class CharpeHandler(logging.Handler):
                 'service_name': self.service_name,
             }
 
-            self.channel.basic_publish(
+            channel.basic_publish(
                 exchange=self.exchange,
                 routing_key=self.medium,
                 body=json.dumps(params),
@@ -39,3 +40,5 @@ class CharpeHandler(logging.Handler):
 
         except Exception:
             self.handleError(record)
+        else:
+            channel.close()
