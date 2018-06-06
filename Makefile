@@ -9,3 +9,6 @@ test:
 
 lint:
 	pycodestyle --statistics --show-source --exclude=.env,.tox,dist,docs,build,*.egg .
+
+flake8:
+	flake8 --exclude=.env,.tox,dist,docs,build,*.egg .

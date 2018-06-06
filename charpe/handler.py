@@ -3,8 +3,8 @@ import logging
 import simplejson as json
 from case_conversion import pascalcase
 
-from charpe.errors import InsuficientInformation, MisconfiguredProvider, \
-    InsuficientInformation, MediumError
+from charpe.errors import MisconfiguredProvider, InsuficientInformation, \
+    MediumError
 
 
 LOGGER = logging.getLogger(__name__)

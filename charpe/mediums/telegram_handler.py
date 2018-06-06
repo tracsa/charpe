@@ -1,8 +1,10 @@
 from jinja2 import Environment, DictLoader
+from jinja2.exceptions import TemplateNotFound
 import logging
 import requests
 
 from charpe.mediums import BaseMedium
+from charpe.errors import InsuficientInformation, MediumError
 
 LOGGER = logging.getLogger(__name__)
 

@@ -1,5 +1,3 @@
-from multiprocessing import Pool
-import signal
 import pika
 import logging
 
@@ -31,7 +29,7 @@ class Loop:
         ))
 
         queue_name = self.config['RABBIT_QUEUE']
-        result = channel.queue_declare(
+        channel.queue_declare(
             queue=queue_name,
             durable=True,
         )

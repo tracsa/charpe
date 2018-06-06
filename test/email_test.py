@@ -1,12 +1,8 @@
 from unittest.mock import MagicMock
 import pytest
-import simplejson as json
 
-from charpe.handler import Handler
 from charpe.mediums.email_handler import EmailHandler
 from charpe.errors import InsuficientInformation
-
-from .utils import MockMethod
 
 
 def test_send_requirements(config):
