@@ -39,7 +39,7 @@ setup(
         'charpe.mediums',
     ],
 
-    package_data={'charpe': ['templates/**']},
+    package_data={'charpe': ['templates/*.html']},
 
     entry_points={
         'console_scripts': [

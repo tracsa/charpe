@@ -70,7 +70,7 @@ class EmailHandler(BaseMedium):
             msg.attach(MIMEText(rendered_template, 'html'))
             msg.attach(MIMEText(stp.get_data(), 'plain'))
         except TemplateNotFound:
-            raise MediumError('Could not load jinja template: {}'.format(
+            raise MediumError('Template not found: {}'.format(
                 template
             ))
 
