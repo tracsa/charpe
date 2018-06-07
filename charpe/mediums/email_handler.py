@@ -1,13 +1,13 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from html.parser import HTMLParser
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, ChoiceLoader
 from jinja2.exceptions import TemplateNotFound
 import logging
 import os
 import smtplib
 
-from charpe.mediums import BaseMedium
+from charpe.mediums.base import BaseMedium
 from charpe.template_filters import datetimeformat, diffinhours
 from charpe.errors import InsuficientInformation, MediumError
 
@@ -33,10 +33,12 @@ class EmailHandler(BaseMedium):
 
     def initialize(self):
         self.jinja = Environment(
-            loader=FileSystemLoader(
-                os.path.join(os.path.dirname(__file__), '../templates')
-            ),
-            autoescape=select_autoescape(['html']),
+            loader=ChoiceLoader([
+                FileSystemLoader(self.config['EMAIL_TEMPLATES']),
+                FileSystemLoader(
+                    os.path.join(os.path.dirname(__file__), '../templates')
+                ),
+            ]),
         )
 
         self.jinja.filters['datetimeformat'] = datetimeformat

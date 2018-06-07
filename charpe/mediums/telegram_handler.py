@@ -1,9 +1,9 @@
-from jinja2 import Environment, DictLoader
+from jinja2 import Environment, DictLoader, ChoiceLoader
 from jinja2.exceptions import TemplateNotFound
 import logging
 import requests
 
-from charpe.mediums import BaseMedium
+from charpe.mediums.base import BaseMedium
 from charpe.errors import InsuficientInformation, MediumError
 
 LOGGER = logging.getLogger(__name__)
@@ -13,11 +13,14 @@ class TelegramHandler(BaseMedium):
 
     def initialize(self):
         self.jinja = Environment(
-            loader=DictLoader({
-                'basic': '{{ content }}',
-                'server-error':
-                    '⚠️ #{{ service_name }} ⚠️\n```{{ traceback }}```',
-            }),
+            loader=ChoiceLoader([
+                DictLoader(self.config['TELEGRAM_TEMPLATES']),
+                DictLoader({
+                    'basic': '{{ content }}',
+                    'server-error':
+                        '⚠️ #{{ service_name }} ⚠️\n```{{ traceback }}```',
+                }),
+            ]),
         )
 
     def publish(self, message):

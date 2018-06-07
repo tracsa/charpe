@@ -34,3 +34,8 @@ URL_SUBDOMAIN = 'com'
 
 # For the telegram handler
 TELEGRAM_BOT_KEY = '<bot key>'
+
+# Override or add telegram teplates
+TELEGRAM_TEMPLATES = {}
+# Override or add email templates
+EMAIL_TEMPLATES = '/var/templates/'
