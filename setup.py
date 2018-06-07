@@ -14,7 +14,7 @@ setup(
     long_description=long_description,
     url='https://github.com/tracsa/charpe',
 
-    version='1.0.3',
+    version='1.1.0',
 
     author='Abraham Toriz Cruz',
     author_email='categulario@gmail.com',
