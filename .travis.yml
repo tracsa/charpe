@@ -1,11 +1,20 @@
 language: python
 cache: pip
 python:
-  - "3.6"
+- '3.6'
 install:
-  - pip install -r requirements.txt
-  - pip install pycodestyle
+- pip install -r requirements.txt
+- pip install pycodestyle
 script:
-  - pytest -vv
-  - pycodestyle --statistics --show-source --exclude=.env,.tox,dist,docs,build,*.egg .
-  - flake8 --exclude=.env,.tox,dist,docs,build,*.egg .
+- pytest -vv
+- pycodestyle --statistics --show-source --exclude=.env,.tox,dist,docs,build,*.egg
+  .
+- flake8 --exclude=.env,.tox,dist,docs,build,*.egg .
+deploy:
+  provider: pypi
+  user: categulario
+  on:
+    tags: true
+  distributions: sdist bdist_wheel
+  password:
+    secure: jTxujb8a6AiEZJ+HuKoPFke1wzjG56MB1KdNUVnrjtvyY29UmItSeVvXskBjmIIE6jZ9G8e+UoV/U3byQiiMR7sjdvHSZx6iVcKHHGNeBODk0WsllkWHdArotex1ptGOOSNJIu0hE40WtEpw3Tb42sG4/MMRirmbtgSiKzfOquod6OTgcwqz8SJZpcSD6/lgq4KvZFcmNYKiGYbESb0TTGA9eC40j3Ge/g9L9R4qSIRV0kyUaTQJTh1mpm7lsKrhoVF0pFNgrZ3wNg1vN8IexHtVddehMKVeWCpOvQMwuhb4yArNWeQSu7jVDKNGE62fwD2c//1FUcfAfUi/jGZaKEGeohNPQPH6qT3AFtAkSTP78WhncQWqZPsNvzy3/tv/st2IR5GXmKIdLsinGiLlBA9SMIBEsz4wTwDD+V/19vgM+DRHRlUMNm0z2mEI8HwzEB7nakBYZfmyXw8xFb5p8uv84ud9m0+4VhywmIGJEZrgq4NoUzo9tVpfL7EW4M1jKOIjoz9wxhTl1IaSveaSKgP/l0eI2h/45az6uZQyRLMLjM/8B3Ocydhi6XUsOe4fTLg73SoLLdI7NDzszhQOE78O1C0cAsHKHtS2i0t06b7GXN5aNsoH6kEzimT/6noVoZKOIEutVKTVc4371ANO9Aqr1xB9hSWZaibNdvLiiBI=
