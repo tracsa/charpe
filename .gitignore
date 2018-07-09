@@ -1,5 +1,4 @@
 __pycache__/
-.env/
 settings_*.py
 *.pyc
 .eggs/
@@ -8,3 +7,5 @@ settings_*.py
 dist/
 build/
 .tox/
+Pipfile.lock
+.env

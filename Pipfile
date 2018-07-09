@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pytest = "*"
+pytest-mock = "*"
+"flake8" = "*"
+"684d514" = {path = "/home/abraham/src/charpe", editable = true}
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
