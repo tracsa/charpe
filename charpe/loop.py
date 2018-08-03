@@ -57,4 +57,4 @@ class Loop:
         try:
             channel.start_consuming()
         except KeyboardInterrupt:
-            LOGGER.info('PVM stopped')
+            LOGGER.info('charpe stopped')
