@@ -7,5 +7,5 @@ settings_*.py
 dist/
 build/
 .tox/
-Pipfile.lock
+Pipfile*
 .env

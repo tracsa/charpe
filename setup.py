@@ -8,13 +8,16 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst')) as f:
     long_description = f.read()
 
+with open(path.join(here, 'charpe', 'version.txt')) as f:
+    version = f.read().strip()
+
 setup(
     name='charpe',
     description='Sends messages from applications through different media',
     long_description=long_description,
     url='https://github.com/tracsa/charpe',
 
-    version='1.1.0',
+    version=version,
 
     author='Abraham Toriz Cruz',
     author_email='categulario@gmail.com',
@@ -39,15 +42,15 @@ setup(
         'charpe.mediums',
     ],
 
-    package_data={'charpe': ['templates/*.html']},
+    package_data={
+        'charpe': ['templates/*.html', 'version.txt'],
+    },
 
     entry_points={
         'console_scripts': [
             'charped = charpe.main:main',
         ],
     },
-
-    include_package_data=True,
 
     install_requires=[
         'jinja2',

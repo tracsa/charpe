@@ -6,10 +6,7 @@ install:
 - pip install -r requirements.txt
 - pip install pycodestyle
 script:
-- pytest -vv
-- pycodestyle --statistics --show-source --exclude=.env,.tox,dist,docs,build,*.egg
-  .
-- flake8 --exclude=.env,.tox,dist,docs,build,*.egg .
+- make test
 deploy:
   provider: pypi
   user: categulario

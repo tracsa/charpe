@@ -1,14 +1,15 @@
+.PHONY: release clean test lint
+
 release:
 	./setup.py test && ./setup.py sdist && ./setup.py bdist_wheel && twine upload dist/* && git push && git push --tags
 
 clean:
 	rm -rf dist/
 
-test:
+test: pytest lint
+
+pytest:
 	pytest -xvv
 
 lint:
-	pycodestyle --statistics --show-source --exclude=.env,.tox,dist,docs,build,*.egg .
-
-flake8:
 	flake8 --exclude=.env,.tox,dist,docs,build,*.egg .
