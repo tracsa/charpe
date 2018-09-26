@@ -1,7 +1,10 @@
 .PHONY: release clean test lint
 
-release:
-	./setup.py test && ./setup.py sdist && ./setup.py bdist_wheel && twine upload dist/* && git push && git push --tags
+build:
+	./setup.py test && ./setup.py sdist && ./setup.py bdist_wheel
+
+publish:
+	twine upload dist/* && git push && git push --tags
 
 clean:
 	rm -rf dist/
