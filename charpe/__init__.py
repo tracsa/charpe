@@ -21,7 +21,7 @@ class CharpeHandler(logging.Handler):
         channel = connection.channel()
 
         try:
-            traceback = self.format(record)
+            traceback = record.getMessage()
 
             params = self.params.copy()
             params['data'] = {
