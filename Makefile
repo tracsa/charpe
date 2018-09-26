@@ -1,4 +1,4 @@
-.PHONY: release clean test lint
+.PHONY: build publish clean test pytest lint
 
 build:
 	./setup.py test && ./setup.py sdist && ./setup.py bdist_wheel
