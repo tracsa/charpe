@@ -5,7 +5,7 @@ import pika
 
 class CharpeHandler(logging.Handler):
 
-    def __init__(self, host, medium, exchange, params, service_name):
+    def __init__(self, host, medium, exchange, params, service_name, **kwargs):
         super().__init__()
 
         self.host = host
@@ -13,10 +13,17 @@ class CharpeHandler(logging.Handler):
         self.exchange = exchange
         self.params = params
         self.service_name = service_name
+        self.port = kwargs.get('port', 5672)
+        self.credentials = pika.PlainCredentials(
+            username=kwargs.get('username', 'guest'),
+            password=kwargs.get('password', 'guest'),
+        )
 
     def emit(self, record):
         connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=self.host,
+            port=self.port,
+            credentials=self.credentials,
         ))
         channel = connection.channel()
 

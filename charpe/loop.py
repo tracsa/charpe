@@ -18,6 +18,10 @@ class Loop:
         connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=self.config['RABBIT_HOST'],
             port=self.config['RABBIT_PORT'],
+            credentials=pika.PlainCredentials(
+                username=self.config['RABBIT_USER'],
+                password=self.config['RABBIT_PASS'],
+            ),
         ))
         channel = connection.channel()
 
