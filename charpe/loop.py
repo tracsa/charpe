@@ -56,7 +56,7 @@ class Loop:
             queue=queue_name,
             on_message_callback=self.handler,
             consumer_tag=self.config['RABBIT_CONSUMER_TAG'],
-            no_ack=True
+            auto_ack=True
         )
 
         try:
