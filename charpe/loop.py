@@ -17,6 +17,7 @@ class Loop:
     def start(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=self.config['RABBIT_HOST'],
+            port=self.config['RABBIT_PORT'],
         ))
         channel = connection.channel()
 
