@@ -56,7 +56,7 @@ setup(
         'jinja2',
         'simplejson',
         'requests',
-        'pika',
+        'pika >= 1.0',
         'itacate',
         'pytz',
         'case_conversion',
