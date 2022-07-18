@@ -5,6 +5,8 @@ WORKERS = 2
 # Rabbitmq
 RABBIT_HOST = 'localhost'
 RABBIT_PORT = 5672
+RABBIT_USER = 'guest'
+RABBIT_PASS = 'guest'
 RABBIT_NOTIFY_EXCHANGE = 'charpe_notify'
 RABBIT_CONSUMER_TAG = 'charpe_notifier_consumer_1'
 RABBIT_NO_ACK = True
