@@ -14,7 +14,7 @@ RABBIT_HOST = os.getenv(
 RABBIT_PORT = int(os.getenv(
     'CHARPE_RABBITMQ_PORT',
     '5672',
-)
+))
 RABBIT_USER = os.getenv(
     'CHARPE_RABBITMQ_USER',
     'guest',
