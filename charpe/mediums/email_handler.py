@@ -68,8 +68,8 @@ class EmailHandler(BaseMedium):
             stp = StripTagsParser()
             stp.feed(rendered_template)
 
-            msg.attach(MIMEText(rendered_template, 'html'))
             msg.attach(MIMEText(stp.get_data(), 'plain'))
+            msg.attach(MIMEText(rendered_template, 'html'))
         except TemplateNotFound:
             raise MediumError('Template not found: {}'.format(
                 template
