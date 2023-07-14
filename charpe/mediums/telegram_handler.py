@@ -17,8 +17,12 @@ class TelegramHandler(BaseMedium):
                 DictLoader(self.config['TELEGRAM_TEMPLATES']),
                 DictLoader({
                     'basic': '{{ content }}',
-                    'server-error':
-                        '⚠️ #{{ service_name }} ⚠️\n```{{ traceback }}```',
+                    'server-error': ''.join([
+                        '⚠️',
+                        ' #{{ service_name }} ',
+                        '⚠️',
+                        '\n```\n{{ traceback  }}\n```',
+                    ]),
                 }),
             ]),
         )
