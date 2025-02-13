@@ -105,6 +105,7 @@ class EmailHandler(BaseMedium):
         except (
             smtplib.SMTPDataError,
             smtplib.SMTPNotSupportedError,
+            smtplib.SMTPRecipientsRefused,
         ):
             LOGGER.info(traceback.format_exc())
 
