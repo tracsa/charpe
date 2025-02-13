@@ -6,6 +6,7 @@ from jinja2.exceptions import TemplateNotFound
 import logging
 import os
 import smtplib
+import traceback
 
 from charpe.mediums.base import BaseMedium
 from charpe.template_filters import datetimeformat, diffinhours
@@ -98,7 +99,10 @@ class EmailHandler(BaseMedium):
                 self.config['MAIL_PASSWORD'],
             )
 
-        host.send_message(msg)
-        host.quit()
+        try:
+            host.send_message(msg)
+            LOGGER.info('Email sent to {}'.format(recipient))
+        except smtplib.SMTPDataError:
+            LOGGER.info(traceback.format_exc())
 
-        LOGGER.info('Email sent to {}'.format(recipient))
+        host.quit()
