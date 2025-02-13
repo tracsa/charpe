@@ -102,7 +102,10 @@ class EmailHandler(BaseMedium):
         try:
             host.send_message(msg)
             LOGGER.info('Email sent to {}'.format(recipient))
-        except smtplib.SMTPDataError:
+        except (
+            smtplib.SMTPDataError,
+            smtplib.SMTPNotSupportedError,
+        ):
             LOGGER.info(traceback.format_exc())
 
         host.quit()
