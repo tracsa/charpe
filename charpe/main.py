@@ -20,7 +20,7 @@ def main():
     import logging
 
     logging.basicConfig(
-        format='[%(levelname)s] %(message)s - %(name)s:%(lineno)s',
+        format='[%(asctime)s: %(levelname)s] %(message)s - %(name)s:%(lineno)s',
         level=config['LOG_LEVEL'],
     )
 
